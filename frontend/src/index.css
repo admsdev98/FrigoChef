@@ -1,5 +1,27 @@
 /* Tailwind v4 import */
 @import "tailwindcss";
 
-/* Project custom styles (loaded after Tailwind to allow overrides) */
-@import './styles/main.css';
+/* Scroll suave natural */
+html {
+  scroll-behavior: smooth;
+}
+
+/* Scroll por secciones solo en desktop */
+@media (min-width: 1024px) {
+  html {
+    overflow: hidden;
+  }
+  
+  .section-scroll {
+    scroll-snap-type: y mandatory;
+    overflow-y: scroll;
+    height: 100vh;
+  }
+
+  .section-scroll section {
+    scroll-snap-align: start;
+    height: 100vh;
+  }
+}
+
+/* Estilos personalizados */

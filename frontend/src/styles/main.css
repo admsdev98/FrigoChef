@@ -1,6 +1,0 @@
-
-/* Minimal helper styles kept for small preview overlay that is easier in CSS than JSX */
-.preview-overlay{position:fixed;inset:0;background:rgba(0,0,0,0.75);display:flex;align-items:center;justify-content:center;z-index:50}
-.preview-img{width:8rem;height:8rem;object-fit:cover;border-radius:.5rem}
-.muted{color:#6b7280}
-
