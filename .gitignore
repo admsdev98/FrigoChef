@@ -207,3 +207,4 @@ Thumbs.db
 # Copilot
 .github
 .github/*
+scripts_tables.sql

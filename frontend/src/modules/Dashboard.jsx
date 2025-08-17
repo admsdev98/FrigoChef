@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import { Sidebar } from '../components/Sidebar';
 import { RecipeInput } from '../components/RecipeInput';
+import NutritionProfile from '../pages/NutritionProfile';
+import RecipeList from '../components/RecipeList.jsx';
 
 export function Dashboard({ user, onSignOut }) {
   const [sidebarOpen, setSidebarOpen] = useState(false);
@@ -28,9 +30,7 @@ export function Dashboard({ user, onSignOut }) {
                 Escribe, graba un audio o sube una foto de tus ingredientes
               </p>
             </div>
-            
             <RecipeInput onSubmit={handleRecipeSubmit} />
-            
             <div className="mt-8 text-center text-xs text-slate-400 max-w-md">
               <p>
                 Puedes describir ingredientes por texto, grabar un audio o subir una foto. 
@@ -39,36 +39,45 @@ export function Dashboard({ user, onSignOut }) {
             </div>
           </div>
         );
-        
-      case 'recipes':
+      case 'menu':
         return (
           <div className="flex-1 flex flex-col items-center justify-center px-4 py-8">
             <div className="text-center max-w-md">
               <div className="w-16 h-16 bg-slate-100 rounded-full flex items-center justify-center mx-auto mb-4">
                 <svg className="w-8 h-8 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 6h16M4 12h16M4 18h16" />
                 </svg>
               </div>
-              <h2 className="text-2xl font-bold text-slate-800 mb-2">Mis Recetas</h2>
+              <h2 className="text-2xl font-bold text-slate-800 mb-2">Generar Menú</h2>
               <p className="text-slate-600 mb-6">
-                Aquí aparecerán todas las recetas que hayas generado
+                Aquí podrás generar un menú completo según tus ingredientes y preferencias.
               </p>
               <button
                 onClick={() => setCurrentSection('main')}
                 className="bg-emerald-600 text-white px-6 py-3 rounded-lg hover:bg-emerald-700 transition-colors"
               >
-                Crear mi primera receta
+                Volver a receta rápida
               </button>
             </div>
           </div>
         );
-        
+      case 'dishes':
+        return (
+          <div className="flex-1 flex flex-col px-4 py-8">
+            <RecipeList onCreateNew={() => setCurrentSection('main')} />
+          </div>
+        );
+      case 'nutrition':
+        return (
+          <NutritionProfile user={user} onSave={(data) => {
+            console.log('Preferencias nutricionales guardadas:', data);
+          }} />
+        );
       case 'settings':
         return (
           <div className="flex-1 flex flex-col items-center justify-center px-4 py-8">
             <div className="w-full max-w-md bg-white rounded-lg shadow-sm border border-slate-200 p-6">
               <h2 className="text-2xl font-bold text-slate-800 mb-6">Configuración</h2>
-              
               <div className="space-y-6">
                 {/* Información de cuenta */}
                 <div>
@@ -78,7 +87,6 @@ export function Dashboard({ user, onSignOut }) {
                     <p className="text-xs text-slate-500 mt-1">Usuario verificado</p>
                   </div>
                 </div>
-                
                 {/* Preferencias */}
                 <div>
                   <h3 className="text-sm font-medium text-slate-700 mb-3">Preferencias</h3>
@@ -93,7 +101,6 @@ export function Dashboard({ user, onSignOut }) {
                     </label>
                   </div>
                 </div>
-                
                 {/* Botón de logout alternativo */}
                 <div className="pt-4 border-t border-slate-200">
                   <button
@@ -107,7 +114,6 @@ export function Dashboard({ user, onSignOut }) {
             </div>
           </div>
         );
-        
       default:
         return null;
     }
