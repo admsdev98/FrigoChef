@@ -5,6 +5,63 @@ import { apiService } from './api.js';
  */
 export const recipeService = {
   /**
+   * Envía datos de receta rápida (texto, imagen, audio) al backend MCP
+   * @param {Object} quickData - { mode, text, image, audio }
+   * @returns {Promise<Object>} Receta generada
+   */
+  async generateQuickRecipe(quickData) {
+    try {
+      let tool = quickData.mode;
+      let content = '';
+      if (tool === 'text') {
+        content = quickData.text;
+      } else if (tool === 'image' && quickData.image && quickData.image.file) {
+        content = await new Promise((resolve, reject) => {
+          const reader = new FileReader();
+          reader.onload = () => resolve(reader.result.split(',')[1]);
+          reader.onerror = reject;
+          reader.readAsDataURL(quickData.image.file);
+        });
+      } else if (tool === 'audio' && quickData.audio && quickData.audio.blob) {
+        content = await new Promise((resolve, reject) => {
+          const reader = new FileReader();
+          reader.onload = () => resolve(reader.result.split(',')[1]);
+          reader.onerror = reject;
+          reader.readAsDataURL(quickData.audio.blob);
+        });
+      }
+
+      const payload = {
+        type: 'quick-recipe',
+        tool,
+        content
+      };
+
+      // Autenticación manual
+      const { data: { session }, error: sessionError } = await import('./supabase.js').then(m => m.supabase.auth.getSession());
+      if (sessionError || !session) throw new Error('Usuario no autenticado');
+
+      const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:8000';
+      const url = `${API_BASE_URL}/mcp`;
+      const response = await fetch(url, {
+        method: 'POST',
+        headers: {
+          'Authorization': `Bearer ${session.access_token}`,
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(payload)
+      });
+      if (!response.ok) {
+        const errorData = await response.json().catch(() => ({}));
+        throw new Error(errorData.detail || `Error ${response.status}: ${response.statusText}`);
+      }
+      return await response.json();
+    } catch (error) {
+      console.error('Error al generar receta rápida:', error);
+      throw error;
+    }
+  },
+  /**
    * Obtiene todas las recetas del usuario
    * @returns {Promise<Array>} Lista de recetas del usuario
    */

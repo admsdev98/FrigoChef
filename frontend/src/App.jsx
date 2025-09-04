@@ -7,6 +7,7 @@ import { RecipeProvider } from './context/RecipeContext.jsx';
 import { HomePage } from './pages/HomePage';
 import { LoginPage } from './pages/LoginPage';
 import { DashboardPage } from './pages/DashboardPage';
+import { FAQPage } from './pages/FAQPage';
 
 // Componente para proteger rutas
 function ProtectedRoute({ children }) {
@@ -47,6 +48,7 @@ function App() {
         <BrowserRouter>
           <Routes>
             <Route path="/" element={<HomePage />} />
+            <Route path="/faq" element={<FAQPage />} />
             <Route 
               path="/login" 
               element={

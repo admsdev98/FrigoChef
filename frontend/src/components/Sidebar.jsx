@@ -1,6 +1,6 @@
 import React from 'react';
 
-export function Sidebar({ isOpen, onClose, onSignOut, currentSection, setCurrentSection }) {
+export function Sidebar({ isOpen, onClose, user, onSignOut, currentSection, setCurrentSection }) {
   const menuItems = [
     {
       id: 'main',
@@ -52,18 +52,32 @@ export function Sidebar({ isOpen, onClose, onSignOut, currentSection, setCurrent
       
       {/* Sidebar */}
       <div className={`
-        fixed top-0 left-0 h-full w-64 bg-slate-900 text-white z-50 transform transition-transform duration-300 ease-in-out
+        fixed top-0 left-0 h-full w-64 bg-gradient-to-b from-emerald-900 via-emerald-800 to-emerald-900 text-white z-50 transform transition-transform duration-300 ease-in-out backdrop-blur-lg
         ${isOpen ? 'translate-x-0' : '-translate-x-full'}
         lg:translate-x-0 lg:static lg:transform-none
       `}>
-        <div className="flex flex-col h-full">
+        <div className="flex flex-col h-full relative overflow-hidden">
+          {/* Decorative background elements */}
+          <div className="absolute top-0 left-0 w-full h-full">
+            <div className="absolute top-10 -left-4 w-24 h-24 bg-emerald-500/10 rounded-full blur-xl"></div>
+            <div className="absolute top-40 -right-8 w-32 h-32 bg-emerald-400/10 rounded-full blur-xl"></div>
+            <div className="absolute bottom-20 left-4 w-20 h-20 bg-emerald-600/10 rounded-full blur-xl"></div>
+          </div>
+          
           {/* Header */}
-          <div className="p-6 border-b border-slate-700">
+          <div className="relative p-6 border-b border-white/10">
             <div className="flex items-center justify-between">
-              <h1 className="text-xl font-bold">FrigoChef</h1>
+              <div className="flex items-center space-x-3">
+                <img 
+                  src="/src/media/main_logo_without_background.png" 
+                  alt="Tu NeveraApp" 
+                  className="w-8 h-8"
+                />
+                <h1 className="text-xl font-bold bg-gradient-to-r from-white to-emerald-200 bg-clip-text text-transparent">Tu NeveraApp</h1>
+              </div>
               <button
                 onClick={onClose}
-                className="lg:hidden p-1 rounded-md hover:bg-slate-700"
+                className="lg:hidden p-2 rounded-lg hover:bg-white/10 transition-colors"
               >
                 <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12" />
@@ -73,34 +87,69 @@ export function Sidebar({ isOpen, onClose, onSignOut, currentSection, setCurrent
           </div>
 
           {/* Menu Items */}
-          <nav className="flex-1 px-4 py-6 space-y-2">
-            {menuItems.map((item, idx) => (
-              <button
-                key={item.id}
-                onClick={() => {
-                  setCurrentSection(item.id);
-                  onClose();
-                }}
-                className={`
-                  w-full flex items-center space-x-3 px-4 py-3 rounded-lg transition-colors text-left
-                  ${currentSection === item.id 
-                    ? 'bg-emerald-600 text-white' 
-                    : 'text-slate-300 hover:bg-slate-700 hover:text-white'
-                  }
-                  ${idx === 0 ? 'font-bold' : ''}
-                `}
-              >
-                {item.icon}
-                <span>{item.label}</span>
-              </button>
-            ))}
+          <nav className="relative flex-1 px-4 py-6 space-y-2">
+            {menuItems.map((item, idx) => {
+              const isMenuDisabled = item.id === 'menu';
+              
+              if (isMenuDisabled) {
+                // Diseño especial para "Mi menú semanal"
+                return (
+                  <div key={item.id} className="relative">
+                    {/* Texto "Próximamente" arriba */}                    
+                    <div className="text-center mb-2">
+                      <span className="text-xs text-amber-300 font-medium bg-amber-500/20 px-3 py-1 rounded-full border border-amber-400/30 backdrop-blur-sm">
+                        Próximamente
+                      </span>
+                    </div>
+                    {/* Botón deshabilitado */}
+                    <button
+                      disabled
+                      className="w-full flex items-center space-x-3 px-4 py-3 text-white/40 cursor-not-allowed bg-white/5 rounded-xl border border-white/10"
+                    >
+                      {/* Candado amarillo */}
+                      <svg className="w-5 h-5 text-amber-400" fill="currentColor" viewBox="0 0 24 24">
+                        <path d="M18 8h-1V6c0-2.76-2.24-5-5-5S7 3.24 7 6v2H6c-1.1 0-2 .9-2 2v10c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V10c0-1.1-.9-2-2-2zM9 6c0-1.66 1.34-3 3-3s3 1.34 3 3v2H9V6z"/>
+                      </svg>
+                      <span className="font-medium">{item.label}</span>
+                    </button>
+                  </div>
+                );
+              }
+              
+                            // Diseño normal para otros elementos
+              return (
+                <button
+                  key={item.id}
+                  onClick={() => {
+                    setCurrentSection(item.id);
+                    onClose(); // Cerrar sidebar en mobile
+                  }}
+                  className={`
+                    w-full flex items-center space-x-3 px-4 py-3 rounded-xl transition-all duration-200 text-left group
+                    ${currentSection === item.id
+                      ? 'bg-gradient-to-r from-emerald-500/20 to-emerald-400/20 text-white shadow-lg border border-emerald-400/30 backdrop-blur-sm' 
+                      : 'text-white/80 hover:bg-white/10 hover:text-white border border-transparent hover:border-white/20'
+                    }
+                    ${idx === 0 ? 'font-semibold' : ''}
+                  `}
+                >
+                  <span className={`transition-transform duration-200 ${currentSection === item.id ? 'scale-110' : 'group-hover:scale-105'}`}>
+                    {item.icon}
+                  </span>
+                  <span className="font-medium">{item.label}</span>
+                  {currentSection === item.id && (
+                    <div className="ml-auto w-2 h-2 bg-emerald-400 rounded-full shadow-lg"></div>
+                  )}
+                </button>
+              );
+            })}
           </nav>
 
           {/* Logout y Configuración reducidos */}
-          <div className="p-4 border-t border-slate-700 flex flex-row gap-2 justify-between items-center">
+          <div className="relative p-4 border-t border-white/10 flex flex-row gap-2 justify-between items-center">
             <button
               onClick={onSignOut}
-              className="flex-1 flex items-center justify-center space-x-2 px-2 py-2 rounded-lg text-slate-300 hover:bg-red-600 hover:text-white transition-colors text-sm"
+              className="flex-1 flex items-center justify-center space-x-2 px-3 py-2 rounded-lg text-white/80 hover:bg-red-500/20 hover:text-red-300 transition-all text-sm border border-transparent hover:border-red-400/30"
               title="Cerrar sesión"
             >
               <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -108,8 +157,15 @@ export function Sidebar({ isOpen, onClose, onSignOut, currentSection, setCurrent
               </svg>
             </button>
             <button
-              onClick={() => setCurrentSection('settings')}
-              className="flex-1 flex items-center justify-center space-x-2 px-2 py-2 rounded-lg text-slate-300 hover:bg-slate-700 hover:text-white transition-colors text-sm"
+              onClick={() => {
+                setCurrentSection('settings');
+                onClose(); // Cerrar sidebar en mobile
+              }}
+              className={`flex-1 flex items-center justify-center space-x-2 px-3 py-2 rounded-lg transition-all text-sm border ${
+                currentSection === 'settings'
+                  ? 'bg-gradient-to-r from-emerald-500/20 to-emerald-400/20 text-white border-emerald-400/30'
+                  : 'text-white/80 hover:bg-white/10 hover:text-white border-transparent hover:border-white/20'
+              }`}
               title="Configuración"
             >
               <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">

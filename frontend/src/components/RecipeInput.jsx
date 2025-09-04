@@ -1,6 +1,6 @@
 import React, { useState, useRef } from 'react';
 
-export function RecipeInput({ onSubmit }) {
+export function RecipeInput({ onSubmit, isGenerating = false }) {
   const [inputValue, setInputValue] = useState('');
   const [audioFile, setAudioFile] = useState(null);
   const [imageFile, setImageFile] = useState(null);
@@ -14,7 +14,7 @@ export function RecipeInput({ onSubmit }) {
   // Manejar envío
   const handleSubmit = (e) => {
     e.preventDefault();
-    if (!inputValue.trim() && !audioFile && !imageFile) return;
+    if (isGenerating || (!inputValue.trim() && !audioFile && !imageFile)) return;
     
     onSubmit({
       text: inputValue,
@@ -32,6 +32,8 @@ export function RecipeInput({ onSubmit }) {
 
   // Manejar grabación de audio
   const startRecording = async () => {
+    if (isGenerating) return; // Evitar grabación durante generación
+    
     try {
       const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
       const mediaRecorder = new MediaRecorder(stream);
@@ -67,6 +69,8 @@ export function RecipeInput({ onSubmit }) {
 
   // Manejar subida de imagen
   const handleImageUpload = (e) => {
+    if (isGenerating) return; // Evitar subida durante generación
+    
     const file = e.target.files[0];
     if (file) {
       const imageUrl = URL.createObjectURL(file);
@@ -77,6 +81,8 @@ export function RecipeInput({ onSubmit }) {
 
   // Eliminar archivo
   const removeFile = () => {
+    if (isGenerating) return; // Evitar eliminación durante generación
+    
     if (audioFile?.url) URL.revokeObjectURL(audioFile.url);
     if (imageFile?.url) URL.revokeObjectURL(imageFile.url);
     
@@ -88,6 +94,8 @@ export function RecipeInput({ onSubmit }) {
 
   // Cambiar a modo texto
   const switchToText = () => {
+    if (isGenerating) return; // Evitar cambio de modo durante generación
+    
     if (audioFile || imageFile) {
       removeFile();
     }
@@ -142,7 +150,12 @@ export function RecipeInput({ onSubmit }) {
             
             <button
               onClick={removeFile}
-              className="flex-shrink-0 p-1 text-slate-400 hover:text-red-500 transition-colors"
+              disabled={isGenerating}
+              className={`flex-shrink-0 p-1 transition-colors ${
+                isGenerating 
+                  ? 'text-slate-300 cursor-not-allowed' 
+                  : 'text-slate-400 hover:text-red-500'
+              }`}
             >
               <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12" />
@@ -152,6 +165,30 @@ export function RecipeInput({ onSubmit }) {
         </div>
       )}
 
+      {/* Estado de generación de receta */}
+      {isGenerating ? (
+        <div className="p-8 bg-white rounded-lg shadow-sm border border-slate-200">
+          <div className="text-center">
+            <div className="w-16 h-16 bg-emerald-100 rounded-full flex items-center justify-center mx-auto mb-4">
+              <svg className="w-8 h-8 text-emerald-600 animate-spin" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+              </svg>
+            </div>
+            <h3 className="text-lg font-semibold text-slate-800 mb-2">
+              🧑‍🍳 Creando tu receta personalizada
+            </h3>
+            <p className="text-sm text-slate-600 mb-4">
+              Nuestro chef digital está analizando tus ingredientes y preparando una deliciosa receta solo para ti...
+            </p>
+            <div className="flex items-center justify-center space-x-1">
+              <div className="w-2 h-2 bg-emerald-500 rounded-full animate-bounce"></div>
+              <div className="w-2 h-2 bg-emerald-500 rounded-full animate-bounce" style={{ animationDelay: '0.1s' }}></div>
+              <div className="w-2 h-2 bg-emerald-500 rounded-full animate-bounce" style={{ animationDelay: '0.2s' }}></div>
+            </div>
+          </div>
+        </div>
+      ) : (
+        <>
       {/* Input principal */}
       <form onSubmit={handleSubmit} className="relative">
         <div className="flex items-end space-x-2 p-4 bg-white rounded-lg shadow-sm border border-slate-200">
@@ -160,13 +197,20 @@ export function RecipeInput({ onSubmit }) {
             <textarea
               value={inputValue}
               onChange={(e) => setInputValue(e.target.value)}
+              onKeyDown={(e) => {
+                if (e.key === 'Enter' && !e.shiftKey) {
+                  e.preventDefault();
+                  handleSubmit(e);
+                }
+              }}
               placeholder={
+                isGenerating ? 'Generando receta...' :
                 inputMode === 'audio' ? 'Audio grabado - opcional: añade texto adicional' :
                 inputMode === 'image' ? 'Imagen subida - opcional: añade descripción' :
                 'Describe los ingredientes que tienes disponibles...'
               }
-              disabled={inputMode !== 'text' && (audioFile || imageFile)}
-              className="w-full resize-none border-0 focus:ring-0 p-0 text-slate-800 placeholder-slate-400 disabled:bg-transparent"
+              disabled={isGenerating || (inputMode !== 'text' && (audioFile || imageFile))}
+              className="w-full resize-none border-0 focus:ring-0 focus:outline-none p-0 text-slate-800 placeholder-slate-400 disabled:bg-transparent"
               rows="1"
               style={{ maxHeight: '120px' }}
               onInput={(e) => {
@@ -182,9 +226,9 @@ export function RecipeInput({ onSubmit }) {
             <button
               type="button"
               onClick={() => fileInputRef.current?.click()}
-              disabled={inputMode !== 'text'}
+              disabled={isGenerating || inputMode !== 'text'}
               className={`p-2 rounded-lg transition-colors ${
-                inputMode === 'text' 
+                !isGenerating && inputMode === 'text' 
                   ? 'text-slate-400 hover:text-emerald-600 hover:bg-emerald-50' 
                   : 'text-slate-300 cursor-not-allowed'
               }`}
@@ -198,11 +242,11 @@ export function RecipeInput({ onSubmit }) {
             <button
               type="button"
               onClick={isRecording ? stopRecording : startRecording}
-              disabled={inputMode !== 'text' && !isRecording}
+              disabled={isGenerating || (inputMode !== 'text' && !isRecording)}
               className={`p-2 rounded-lg transition-colors ${
                 isRecording
                   ? 'text-red-600 bg-red-50 hover:bg-red-100'
-                  : inputMode === 'text'
+                  : !isGenerating && inputMode === 'text'
                     ? 'text-slate-400 hover:text-emerald-600 hover:bg-emerald-50'
                     : 'text-slate-300 cursor-not-allowed'
               }`}
@@ -221,7 +265,7 @@ export function RecipeInput({ onSubmit }) {
             {/* Botón de envío */}
             <button
               type="submit"
-              disabled={!inputValue.trim() && !audioFile && !imageFile}
+              disabled={isGenerating || (!inputValue.trim() && !audioFile && !imageFile)}
               className="p-2 bg-emerald-600 text-white rounded-lg hover:bg-emerald-700 disabled:bg-slate-300 disabled:cursor-not-allowed transition-colors"
             >
               <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -247,6 +291,8 @@ export function RecipeInput({ onSubmit }) {
           <div className="w-2 h-2 bg-red-600 rounded-full animate-pulse mr-2"></div>
           Grabando... Haz clic en stop para finalizar
         </div>
+      )}
+        </>
       )}
     </div>
   );
