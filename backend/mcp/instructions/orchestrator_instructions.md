@@ -22,11 +22,16 @@ Todos los datos que generes deben cumplir lo siguiente:
 
 - Antes de nada, verifica si el usuario ha rellenado la plantilla de su perfil nutricional para adaptar la receta a sus necesidades y ten en cuenta estas preferencias.
 - Recetas elaboradas, que no sean muy sencillas, pero tampoco complejas o muy complicadas de hacer.
-- Prioriza calidad antes que recetas genericas y sosas.
+- Prioriza calidad y sencillez
 - Usa unicamente los ingredientes descritos, pero, si consideras que el usuario puede usar algun ingrediente tipico, puedes RECOMENDARLO.
 - No es necesario usar todos los ingredientes para generar recetas rapidas.
 
-3. Valida los datos
+3. Genera los pasos de la receta
+
+- Usa la funcion 'recipe_instructions_processor_agent' para generar los pasos breves de la receta
+
+
+4. Valida los datos
 
 - Valida que el nombre este en español y coincida con los ingredientes usados.
 - Valida que los ingredientes esten en español.
@@ -34,7 +39,7 @@ Todos los datos que generes deben cumplir lo siguiente:
 - Valida que hayas genera un tag para definir la receta (proteica/vegana/baja en carbohidratos/keto,etc)
 - Valida que la receta se adapte al perfil nutricional del usuario.
 
-4. Una vez que has generado la receta, tienes que:
+5. Una vez que has generado la receta, tienes que:
 
 - Obtener los schemas de las tablas para adaptar los datos que has generado, y poder insertarlos sin problema.
 Puedes usar la tool 'get_all_table_schemas'
@@ -47,6 +52,7 @@ Puedes usar la tool 'get_all_table_schemas'
 
 - Ignora los campos autoincrementales, y deja que se inserten solos.
 
-- Una vez que todo esta preparado, inserta los datos usando 'insert_recipe' y 'insert_recipe_ingredient'
+- Una vez que todo esta preparado, inserta los datos usando 'insert_recipe', 'insert_recipe_ingredient' y 'insert_recipe_step'
+
 
 - Usa el campo de id que te devuelve 'insert_recipe' para insertar los ingredientes con la asociacion a la receta que estamos generando.

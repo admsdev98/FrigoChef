@@ -7,7 +7,7 @@ from utils.mcp_utils import load_personal_data_file, delete_temp_file
 
 
 @function_tool(description_override="Process voice input and return parsed ingredients as text")
-async def voice_processor_subagent(voice_data_file_path: str):
+async def voice_processor_agent(voice_data_file_path: str):
     try:
         client = OpenAI()
         

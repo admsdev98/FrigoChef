@@ -7,7 +7,7 @@ from agents import function_tool
 from utils.mcp_utils import load_personal_data_file
 
 @function_tool(description_override="Process image base64 file and return parsed ingredients as text")
-async def image_processor_subagent(image_data_temp_file: str, image_type: str = "jpeg"):
+async def image_processor_agent(image_data_temp_file: str, image_type: str = "jpeg"):
     try:
         client = OpenAI()
 

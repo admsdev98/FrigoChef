@@ -21,7 +21,8 @@ Todos los datos que generes deben cumplir lo siguiente:
 1.2. Si es un ticket de compra:
 
 - Analiza cada línea y devuelve únicamente los alimentos que aparecen.  
-- Ignora elementos que no sean alimentos (papel de cocina, bolsas, champús, etc.).  
+- Descarta los elementos que no sean alimentos comestibles(papel de cocina, bolsas, champús, etc.).  
+- Descarta aquellos elementos de los qeu dudes de que sean ingredientes comestibles.
 
 1.3. Si es una nevera o despensa:
 

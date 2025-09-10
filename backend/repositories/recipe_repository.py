@@ -1,7 +1,7 @@
 from agents import function_tool
 from clients.supabase_client import SupabaseClient
 
-from schemas.recipe_schema import Recipe, RecipeIngredient, RecipeInsert, RecipeIngredientInsert
+from schemas.recipe_schema import Recipe, RecipeIngredient, RecipeStep, RecipeInsert, RecipeIngredientInsert, RecipeStepsInsert
 
 def get_recipes_by_user_id(user_id: int):
     try:
@@ -20,6 +20,16 @@ def get_recipe_ingredients(recipe_id: int):
         return [RecipeIngredient.model_validate(item) for item in (ingredients.data or [])]
     except Exception as e:
         print(f"Error fetching ingredients: {e}")
+        return []
+    
+def get_recipe_steps(recipe_id: int):
+    try:
+        client = SupabaseClient().get_client()
+        steps = client.from_("recipe_steps").select("*").eq("recipe_id", recipe_id).execute()
+        
+        return [RecipeStep.model_validate(item) for item in (steps.data or [])]
+    except Exception as e:
+        print(f"Error fetching recipe steps: {e}")
         return []
 
 @function_tool(description_override="Insert a new recipe")
@@ -41,3 +51,32 @@ def insert_recipe_ingredient(ingredient: RecipeIngredientInsert):
     except Exception as e:
         print(f"Error inserting recipe ingredient: {e}")
         return None
+
+@function_tool(description_override="Insert steps associated with a recipe")
+def insert_recipe_step(recipe_steps: RecipeStepsInsert):
+    try:
+        client = SupabaseClient().get_client()
+        response = client.table("recipe_steps").insert(recipe_steps.model_dump(mode="json")).execute()
+        return RecipeStepsInsert.model_validate(response.data[0]) if response.data else None
+    except Exception as e:
+        print(f"Error inserting recipe step: {e}")
+        return None
+    
+
+def delete_by_id(recipe_id: int, user_id: int):
+    try:
+        client = SupabaseClient().get_client()
+        
+        recipe = client.from_("recipes").select("*").eq("id", recipe_id).eq("user_id", user_id).execute()
+        
+        if not recipe.data:
+            return False
+        
+        client.from_("recipe_ingredients").delete().eq("recipe_id", recipe_id).execute()
+        client.from_("recipe_steps").delete().eq("recipe_id", recipe_id).execute()
+        client.from_("recipes").delete().eq("id", recipe_id).execute()
+        
+        return True
+    except Exception as e:
+        print(f"Error deleting recipe {recipe_id}: {e}")
+        return False

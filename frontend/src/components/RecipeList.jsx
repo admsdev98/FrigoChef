@@ -90,12 +90,9 @@ const RecipeList = ({ onCreateNew }) => {
           </div>
         </div>
         <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
-          <SkeletonLoaders.RecipeCard />
-          <SkeletonLoaders.RecipeCard />
-          <SkeletonLoaders.RecipeCard />
-          <SkeletonLoaders.RecipeCard />
-          <SkeletonLoaders.RecipeCard />
-          <SkeletonLoaders.RecipeCard />
+        {[...Array(6)].map((_, index) => (
+          <SkeletonLoaders.RecipeCardSkeleton key={index} />
+        ))}
         </div>
       </div>
     );
@@ -351,7 +348,7 @@ const RecipeList = ({ onCreateNew }) => {
                       id={recipe.id}
                       title={recipe.title}
                       ingredients={recipe.ingredients}
-                      instructions={recipe.recipe_metadata?.instructions}
+                      instructions={recipe.steps}
                       metadata={recipe.recipe_metadata}
                       onDelete={handleDeleteRecipe}
                       viewMode={viewMode}
