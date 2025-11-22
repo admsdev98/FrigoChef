@@ -350,6 +350,7 @@ const RecipeList = ({ onCreateNew }) => {
                       ingredients={recipe.ingredients}
                       instructions={recipe.steps}
                       metadata={recipe.recipe_metadata}
+                      image={recipe.image}
                       onDelete={handleDeleteRecipe}
                       viewMode={viewMode}
                     />

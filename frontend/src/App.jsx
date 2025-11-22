@@ -36,7 +36,12 @@ function PublicRoute({ children }) {
     );
   }
   
-  return !isAuthenticated ? children : <Navigate to="/dashboard" replace />;
+  // Si está autenticado, redirigir inmediatamente sin mostrar el componente
+  if (isAuthenticated) {
+    return <Navigate to="/dashboard" replace />;
+  }
+  
+  return children;
 }
 
 function App() {

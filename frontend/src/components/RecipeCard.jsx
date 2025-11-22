@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { ConfirmDialog } from "./UIComponents.jsx";
 
-const RecipeCard = ({ id, title, ingredients, instructions, metadata, onDelete, viewMode = 'grid' }) => {
+const RecipeCard = ({ id, title, ingredients, instructions, metadata, image, onDelete, viewMode = 'grid' }) => {
   // Normaliza instrucciones: soporta array plano o array de objetos con campo instructions (jsonb)
   let normalizedInstructions = [];
   if (Array.isArray(instructions)) {
@@ -159,9 +159,9 @@ const RecipeCard = ({ id, title, ingredients, instructions, metadata, onDelete, 
           {/* IMAGEN */}
           <div className="relative h-48 bg-gradient-to-br from-emerald-400 via-emerald-500 to-emerald-600 overflow-hidden">
             <img 
-              src="/src/media/main_logo_without_background.png" 
-              alt="Recipe"
-              className="absolute inset-0 w-full h-full object-cover opacity-30"
+              src={image?.image_url || "/src/media/main_logo_without_background.png"}
+              alt={title}
+              className={`absolute inset-0 w-full h-full object-cover ${!image?.image_url ? 'opacity-30' : 'opacity-100'}`}
             />
             {/* Overlay gradient */}
             <div className="absolute inset-0 bg-gradient-to-t from-black/20 via-transparent to-transparent"></div>

@@ -104,82 +104,54 @@ export default function NutritionProfile({ user, onSave }) {
     setTimeout(() => setFeedback(f => ({ ...f, visible: false })), 3000);
   };
 
-  // Renderiza los chips con colores personalizados
-    const renderChips = (field, items) => {
-    return (
-      <div className="flex flex-wrap gap-3 mt-3">
-        {items.map((item, index) => (
-          <span
-            key={index}
-            className="inline-flex items-center gap-2 px-4 py-2 bg-gray-100 text-gray-800 rounded-xl text-sm font-semibold border border-gray-200 group hover:bg-gray-200 hover:border-gray-300 transition-all duration-200 shadow-sm hover:shadow-md"
-          >
-            {item}
-            <button
-              type="button"
-              onClick={() => handleRemove(field, index)}
-              className="ml-1 w-5 h-5 flex items-center justify-center text-gray-500 hover:text-red-500 hover:bg-red-50 rounded-full transition-all duration-200 transform hover:scale-110"
-              aria-label={`Eliminar ${item}`}
-            >
-              <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M6 18L18 6M6 6l12 12" />
-              </svg>
-            </button>
-          </span>
-        ))}
-        {items.length === 0 && (
-          <div className="w-full text-center py-6">
-            <div className="w-12 h-12 mx-auto mb-3 text-gray-300">
-              <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" className="w-full h-full">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4" />
-              </svg>
-            </div>
-            <p className="text-sm text-gray-400 font-medium">
-              No hay elementos añadidos
-            </p>
-            <p className="text-xs text-gray-300 mt-1">
-              Escribe arriba y presiona Enter o el botón +
-            </p>
-          </div>
-        )}
-      </div>
-    );
+  // Renderiza los chips de forma simple
+  const renderChips = (field, items) => {
+    return items.map((item, index) => (
+      <span
+        key={index}
+        className="inline-flex items-center gap-1 px-2 py-1 bg-gray-100 text-gray-700 rounded text-sm border"
+      >
+        {item}
+        <button
+          type="button"
+          onClick={() => handleRemove(field, index)}
+          className="text-gray-500 hover:text-red-500 ml-1"
+        >
+          <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12" />
+          </svg>
+        </button>
+      </span>
+    ));
   };
 
   return (
-    <div className="flex-1 flex flex-col h-full px-4 py-6 overflow-hidden bg-gray-50">
-      <div className="w-full max-w-5xl mx-auto h-full flex flex-col">
-        {/* Header estilizado */}
-                {/* Header compacto */}
-        <div className="text-center mb-4 lg:mb-6 flex-shrink-0">
-          <p className="text-gray-600 text-sm lg:text-base mb-1">
+    <div className="flex-1 flex flex-col h-full p-4 overflow-hidden bg-gray-50">
+      <div className="w-full max-w-4xl mx-auto h-full flex flex-col">
+        {/* Header simplificado */}
+        <div className="text-center mb-6 flex-shrink-0">
+          <h2 className="text-lg font-semibold text-gray-800 mb-2">
             Cuéntanos tus gustos para personalizar tus recetas
-          </p>
-          <p className="text-emerald-600 text-xs lg:text-sm font-medium">
+          </h2>
+          <p className="text-emerald-600 text-sm">
             Máximo 5 elementos por sección
           </p>
         </div>
 
-        {/* Contenido estilizado */}
-        <div className="flex-1 flex flex-col min-h-0">
-          {/* Grid mejorado */}
-          <div className="flex-1 grid grid-cols-1 lg:grid-cols-2 gap-6 lg:gap-8 mb-8 min-h-0">
+        {/* Contenido principal */}
+        <div className="flex-1 overflow-y-auto">
+          <div className="space-y-4">
             
             {/* Alérgenos */}
-            <div className="bg-white rounded-3xl border border-gray-200 p-6 lg:p-8 flex flex-col min-h-0 shadow-sm hover:shadow-md transition-all duration-300">
-              <div className="flex items-center gap-4 mb-6">
-                <div className="w-12 h-12 bg-red-50 rounded-2xl flex items-center justify-center border border-red-100">
-                  <span className="text-red-500 text-xl">🚫</span>
-                </div>
-                <div>
-                  <h3 className="text-xl font-bold text-gray-900">Alérgenos</h3>
-                  <p className="text-gray-500 text-sm">Ingredientes que debes evitar</p>
-                </div>
-              </div>
-                            <div className="flex flex-col gap-2 mb-3">
+            <div className="bg-white rounded-lg border border-gray-200 p-4">
+              <h3 className="text-base font-semibold text-gray-800 mb-2">Alérgenos</h3>
+              <p className="text-sm text-gray-600 mb-3">Ingredientes que debes evitar</p>
+              
+              <div className="flex gap-2 mb-3">
                 <input
                   type="text"
-                  className="w-full px-3 py-2 border-2 border-gray-300 rounded-xl focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 text-sm transition-all duration-200 hover:border-gray-400"
-                  placeholder="gluten, huevo..."
+                  className="flex-1 px-3 py-2 border border-gray-300 rounded-md text-sm focus:ring-1 focus:ring-emerald-500 focus:border-emerald-500"
+                  placeholder="Ej: gluten, huevo..."
                   value={input.allergens}
                   onChange={e => setInput({ ...input, allergens: e.target.value })}
                   onKeyDown={e => (e.key === 'Enter' ? (e.preventDefault(), handleAdd('allergens')) : null)}
@@ -188,34 +160,45 @@ export default function NutritionProfile({ user, onSave }) {
                 />
                 <button 
                   type="button" 
-                  className="w-full sm:w-auto px-6 py-2 bg-emerald-600 text-white rounded-xl font-medium hover:bg-emerald-700 transition-all duration-200 disabled:bg-gray-300 text-sm shadow-sm hover:shadow-md transform hover:scale-[1.02]" 
+                  className="px-4 py-2 bg-emerald-600 text-white rounded-md text-sm hover:bg-emerald-700 disabled:bg-gray-300" 
                   onClick={() => handleAdd('allergens')} 
                   disabled={allergens.length >= 5 || !input.allergens.trim()}
                 >
                   Añadir
                 </button>
               </div>
-              <div className="flex-1 overflow-y-auto min-h-0">
-                {renderChips('allergens', allergens)}
+              
+              <div className="flex flex-wrap gap-2">
+                {allergens.map((item, index) => (
+                  <span
+                    key={index}
+                    className="inline-flex items-center gap-1 px-2 py-1 bg-gray-100 text-gray-700 rounded text-sm border"
+                  >
+                    {item}
+                    <button
+                      type="button"
+                      onClick={() => handleRemove('allergens', index)}
+                      className="text-gray-500 hover:text-red-500 ml-1"
+                    >
+                      <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12" />
+                      </svg>
+                    </button>
+                  </span>
+                ))}
               </div>
             </div>
 
             {/* Tipo de dieta */}
-            <div className="bg-white rounded-3xl border border-gray-200 p-6 lg:p-8 flex flex-col min-h-0 shadow-sm hover:shadow-md transition-all duration-300">
-              <div className="flex items-center gap-4 mb-6">
-                <div className="w-12 h-12 bg-green-50 rounded-2xl flex items-center justify-center border border-green-100">
-                  <span className="text-green-500 text-xl">🥗</span>
-                </div>
-                <div>
-                  <h3 className="text-xl font-bold text-gray-900">Dieta</h3>
-                  <p className="text-gray-500 text-sm">Tu estilo de alimentación</p>
-                </div>
-              </div>
-                            <div className="flex flex-col gap-2 mb-3">
+            <div className="bg-white rounded-lg border border-gray-200 p-4">
+              <h3 className="text-base font-semibold text-gray-800 mb-2">Tipo de Dieta</h3>
+              <p className="text-sm text-gray-600 mb-3">Tu estilo de alimentación</p>
+              
+              <div className="flex gap-2 mb-3">
                 <input
                   type="text"
-                  className="w-full px-3 py-2 border-2 border-gray-300 rounded-xl focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 text-sm transition-all duration-200 hover:border-gray-400"
-                  placeholder="vegana, mediterránea..."
+                  className="flex-1 px-3 py-2 border border-gray-300 rounded-md text-sm focus:ring-1 focus:ring-emerald-500 focus:border-emerald-500"
+                  placeholder="Ej: vegana, mediterránea..."
                   value={input.dietType}
                   onChange={e => setInput({ ...input, dietType: e.target.value })}
                   onKeyDown={e => (e.key === 'Enter' ? (e.preventDefault(), handleAdd('dietType')) : null)}
@@ -224,34 +207,45 @@ export default function NutritionProfile({ user, onSave }) {
                 />
                 <button 
                   type="button" 
-                  className="w-full sm:w-auto px-6 py-2 bg-emerald-600 text-white rounded-xl font-medium hover:bg-emerald-700 transition-all duration-200 disabled:bg-gray-300 text-sm shadow-sm hover:shadow-md transform hover:scale-[1.02]" 
+                  className="px-4 py-2 bg-emerald-600 text-white rounded-md text-sm hover:bg-emerald-700 disabled:bg-gray-300" 
                   onClick={() => handleAdd('dietType')} 
                   disabled={dietType.length >= 5 || !input.dietType.trim()}
                 >
                   Añadir
                 </button>
               </div>
-              <div className="flex-1 overflow-y-auto min-h-0">
-                {renderChips('dietType', dietType)}
+              
+              <div className="flex flex-wrap gap-2">
+                {dietType.map((item, index) => (
+                  <span
+                    key={index}
+                    className="inline-flex items-center gap-1 px-2 py-1 bg-gray-100 text-gray-700 rounded text-sm border"
+                  >
+                    {item}
+                    <button
+                      type="button"
+                      onClick={() => handleRemove('dietType', index)}
+                      className="text-gray-500 hover:text-red-500 ml-1"
+                    >
+                      <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12" />
+                      </svg>
+                    </button>
+                  </span>
+                ))}
               </div>
             </div>
 
             {/* Alimentos favoritos */}
-            <div className="bg-white rounded-3xl border border-gray-200 p-6 lg:p-8 flex flex-col min-h-0 shadow-sm hover:shadow-md transition-all duration-300">
-              <div className="flex items-center gap-4 mb-6">
-                <div className="w-12 h-12 bg-yellow-50 rounded-2xl flex items-center justify-center border border-yellow-100">
-                  <span className="text-yellow-500 text-xl">❤️</span>
-                </div>
-                <div>
-                  <h3 className="text-xl font-bold text-gray-900">Me gusta</h3>
-                  <p className="text-gray-500 text-sm">Tus ingredientes favoritos</p>
-                </div>
-              </div>
-              <div className="flex flex-col gap-2 mb-4">
+            <div className="bg-white rounded-lg border border-gray-200 p-4">
+              <h3 className="text-base font-semibold text-gray-800 mb-2">Me Gusta</h3>
+              <p className="text-sm text-gray-600 mb-3">Tus ingredientes favoritos</p>
+              
+              <div className="flex gap-2 mb-3">
                 <input
                   type="text"
-                  className="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 text-sm placeholder-gray-400 transition-all hover:border-gray-300"
-                  placeholder="chocolate, aguacate..."
+                  className="flex-1 px-3 py-2 border border-gray-300 rounded-md text-sm focus:ring-1 focus:ring-emerald-500 focus:border-emerald-500"
+                  placeholder="Ej: chocolate, aguacate..."
                   value={input.preferredFoods}
                   onChange={e => setInput({ ...input, preferredFoods: e.target.value })}
                   onKeyDown={e => (e.key === 'Enter' ? (e.preventDefault(), handleAdd('preferredFoods')) : null)}
@@ -260,34 +254,45 @@ export default function NutritionProfile({ user, onSave }) {
                 />
                 <button 
                   type="button" 
-                  className="w-full sm:w-auto px-5 py-3 bg-emerald-600 text-white rounded-xl font-semibold hover:bg-emerald-700 transition-colors disabled:bg-gray-300 text-sm shadow-sm hover:shadow-md transform hover:scale-105" 
+                  className="px-4 py-2 bg-emerald-600 text-white rounded-md text-sm hover:bg-emerald-700 disabled:bg-gray-300" 
                   onClick={() => handleAdd('preferredFoods')} 
                   disabled={preferredFoods.length >= 5 || !input.preferredFoods.trim()}
                 >
                   Añadir
                 </button>
               </div>
-              <div className="flex-1 overflow-y-auto min-h-0">
-                {renderChips('preferredFoods', preferredFoods)}
+              
+              <div className="flex flex-wrap gap-2">
+                {preferredFoods.map((item, index) => (
+                  <span
+                    key={index}
+                    className="inline-flex items-center gap-1 px-2 py-1 bg-gray-100 text-gray-700 rounded text-sm border"
+                  >
+                    {item}
+                    <button
+                      type="button"
+                      onClick={() => handleRemove('preferredFoods', index)}
+                      className="text-gray-500 hover:text-red-500 ml-1"
+                    >
+                      <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12" />
+                      </svg>
+                    </button>
+                  </span>
+                ))}
               </div>
             </div>
 
             {/* Alimentos que evitar */}
-            <div className="bg-white rounded-3xl border border-gray-200 p-6 lg:p-8 flex flex-col min-h-0 shadow-sm hover:shadow-md transition-all duration-300">
-              <div className="flex items-center gap-4 mb-6">
-                <div className="w-12 h-12 bg-gray-50 rounded-2xl flex items-center justify-center border border-gray-100">
-                  <span className="text-gray-500 text-xl">👎</span>
-                </div>
-                <div>
-                  <h3 className="text-xl font-bold text-gray-900">No me gusta</h3>
-                  <p className="text-gray-500 text-sm">Alimentos a evitar</p>
-                </div>
-              </div>
-              <div className="flex flex-col gap-2 mb-4">
+            <div className="bg-white rounded-lg border border-gray-200 p-4">
+              <h3 className="text-base font-semibold text-gray-800 mb-2">No Me Gusta</h3>
+              <p className="text-sm text-gray-600 mb-3">Alimentos a evitar</p>
+              
+              <div className="flex gap-2 mb-3">
                 <input
                   type="text"
-                  className="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 text-sm placeholder-gray-400 transition-all hover:border-gray-300"
-                  placeholder="pimiento, brócoli..."
+                  className="flex-1 px-3 py-2 border border-gray-300 rounded-md text-sm focus:ring-1 focus:ring-emerald-500 focus:border-emerald-500"
+                  placeholder="Ej: pimiento, brócoli..."
                   value={input.avoidFoods}
                   onChange={e => setInput({ ...input, avoidFoods: e.target.value })}
                   onKeyDown={e => (e.key === 'Enter' ? (e.preventDefault(), handleAdd('avoidFoods')) : null)}
@@ -296,117 +301,117 @@ export default function NutritionProfile({ user, onSave }) {
                 />
                 <button 
                   type="button" 
-                  className="w-full sm:w-auto px-5 py-3 bg-emerald-600 text-white rounded-xl font-semibold hover:bg-emerald-700 transition-colors disabled:bg-gray-300 text-sm shadow-sm hover:shadow-md transform hover:scale-105" 
+                  className="px-4 py-2 bg-emerald-600 text-white rounded-md text-sm hover:bg-emerald-700 disabled:bg-gray-300" 
                   onClick={() => handleAdd('avoidFoods')} 
                   disabled={avoidFoods.length >= 5 || !input.avoidFoods.trim()}
                 >
                   Añadir
                 </button>
               </div>
-              <div className="flex-1 overflow-y-auto min-h-0">
-                {renderChips('avoidFoods', avoidFoods)}
+              
+              <div className="flex flex-wrap gap-2">
+                {avoidFoods.map((item, index) => (
+                  <span
+                    key={index}
+                    className="inline-flex items-center gap-1 px-2 py-1 bg-gray-100 text-gray-700 rounded text-sm border"
+                  >
+                    {item}
+                    <button
+                      type="button"
+                      onClick={() => handleRemove('avoidFoods', index)}
+                      className="text-gray-500 hover:text-red-500 ml-1"
+                    >
+                      <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12" />
+                      </svg>
+                    </button>
+                  </span>
+                ))}
               </div>
             </div>
-          </div>
 
-          {/* Platos favoritos - Estilizado */}
-          <div className="bg-white rounded-3xl border border-gray-200 p-6 lg:p-8 flex-shrink-0 shadow-sm hover:shadow-md transition-all duration-300">
-            <div className="flex items-center gap-4 mb-6">
-              <div className="w-12 h-12 bg-blue-50 rounded-2xl flex items-center justify-center border border-blue-100">
-                <span className="text-blue-500 text-xl">⭐</span>
+            {/* Platos favoritos */}
+            <div className="bg-white rounded-lg border border-gray-200 p-4">
+              <h3 className="text-base font-semibold text-gray-800 mb-2">Platos Favoritos</h3>
+              <p className="text-sm text-gray-600 mb-3">Tus comidas de toda la vida</p>
+              
+              <div className="flex gap-2 mb-3">
+                <input
+                  type="text"
+                  className="flex-1 px-3 py-2 border border-gray-300 rounded-md text-sm focus:ring-1 focus:ring-emerald-500 focus:border-emerald-500"
+                  placeholder="Ej: paella, tacos, sushi..."
+                  value={input.favoriteDishes}
+                  onChange={e => setInput({ ...input, favoriteDishes: e.target.value })}
+                  onKeyDown={e => (e.key === 'Enter' ? (e.preventDefault(), handleAdd('favoriteDishes')) : null)}
+                  maxLength={30}
+                  disabled={favoriteDishes.length >= 5}
+                />
+                <button 
+                  type="button" 
+                  className="px-4 py-2 bg-emerald-600 text-white rounded-md text-sm hover:bg-emerald-700 disabled:bg-gray-300" 
+                  onClick={() => handleAdd('favoriteDishes')} 
+                  disabled={favoriteDishes.length >= 5 || !input.favoriteDishes.trim()}
+                >
+                  Añadir
+                </button>
               </div>
-              <div>
-                <h3 className="text-xl font-bold text-gray-900">Platos Favoritos</h3>
-                <p className="text-gray-500 text-sm">Tus comidas de toda la vida</p>
+              
+              <div className="flex flex-wrap gap-2">
+                {favoriteDishes.map((item, index) => (
+                  <span
+                    key={index}
+                    className="inline-flex items-center gap-1 px-2 py-1 bg-gray-100 text-gray-700 rounded text-sm border"
+                  >
+                    {item}
+                    <button
+                      type="button"
+                      onClick={() => handleRemove('favoriteDishes', index)}
+                      className="text-gray-500 hover:text-red-500 ml-1"
+                    >
+                      <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12" />
+                      </svg>
+                    </button>
+                  </span>
+                ))}
               </div>
             </div>
-            <div className="flex flex-col gap-2 mb-4 max-w-3xl">
-              <input
-                type="text"
-                className="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 text-sm placeholder-gray-400 transition-all hover:border-gray-300"
-                placeholder="paella, tacos, sushi..."
-                value={input.favoriteDishes}
-                onChange={e => setInput({ ...input, favoriteDishes: e.target.value })}
-                onKeyDown={e => (e.key === 'Enter' ? (e.preventDefault(), handleAdd('favoriteDishes')) : null)}
-                maxLength={30}
-                disabled={favoriteDishes.length >= 5}
-              />
-              <button 
-                type="button" 
-                className="w-full sm:w-auto px-5 py-3 bg-emerald-600 text-white rounded-xl font-semibold hover:bg-emerald-700 transition-colors disabled:bg-gray-300 text-sm shadow-sm hover:shadow-md transform hover:scale-105" 
-                onClick={() => handleAdd('favoriteDishes')} 
-                disabled={favoriteDishes.length >= 5 || !input.favoriteDishes.trim()}
-              >
-                Añadir
-              </button>
-            </div>
-            {renderChips('favoriteDishes', favoriteDishes)}
           </div>
         </div>
 
-        {/* Footer estilizado */}
-        <div className="flex-shrink-0 pt-8">
-          <div className="flex flex-col sm:flex-row items-center justify-between gap-6">
-            <div className="flex items-center gap-3 text-gray-500 text-center sm:text-left">
-              <div className="w-5 h-5 text-emerald-600">
-                <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" className="w-full h-full">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
-                </svg>
-              </div>
-              <span className="text-sm font-medium">
-                Tus datos están seguros y nos ayudan a personalizar tus recetas
-              </span>
-            </div>
+        {/* Footer simplificado */}
+        <div className="flex-shrink-0 pt-4">
+          <div className="text-center">
             <button 
               type="button" 
-              className="group relative px-8 py-4 bg-emerald-600 text-white rounded-2xl font-bold text-base hover:bg-emerald-700 transition-all duration-300 shadow-lg hover:shadow-xl disabled:opacity-50 disabled:cursor-not-allowed min-w-56 transform hover:scale-105" 
+              className="px-6 py-3 bg-emerald-600 text-white rounded-lg font-medium hover:bg-emerald-700 disabled:opacity-50 disabled:cursor-not-allowed" 
               onClick={handleSave}
               disabled={saving}
             >
-              <span className="flex items-center justify-center gap-3">
-                {saving ? (
-                  <>
-                    <svg className="w-5 h-5 animate-spin" fill="none" viewBox="0 0 24 24">
-                      <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
-                      <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-                    </svg>
-                    Guardando...
-                  </>
-                ) : (
-                  <>
-                    <svg className="w-5 h-5 group-hover:scale-110 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-                    </svg>
-                    Guardar preferencias
-                  </>
-                )}
-              </span>
+              {saving ? (
+                <>
+                  <svg className="w-4 h-4 animate-spin inline mr-2" fill="none" viewBox="0 0 24 24">
+                    <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                    <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                  </svg>
+                  Guardando...
+                </>
+              ) : (
+                'Guardar preferencias'
+              )}
             </button>
-          </div>
-
-          {/* Mensaje de feedback estilizado */}
-          {feedback.visible && (
-            <div className={`mt-6 p-4 rounded-2xl text-sm flex items-center gap-4 transform transition-all duration-500 shadow-sm ${
-              feedback.type === 'success' 
-                ? 'bg-emerald-50 text-emerald-800 border border-emerald-200' 
-                : 'bg-red-50 text-red-800 border border-red-200'
-            }`}>
-              <div className={`w-8 h-8 rounded-full flex items-center justify-center ${
-                feedback.type === 'success' ? 'bg-emerald-100' : 'bg-red-100'
+            
+            {/* Mensaje de feedback */}
+            {feedback.visible && (
+              <div className={`mt-3 p-3 rounded-lg text-sm ${
+                feedback.type === 'success' 
+                  ? 'bg-emerald-50 text-emerald-800 border border-emerald-200' 
+                  : 'bg-red-50 text-red-800 border border-red-200'
               }`}>
-                {feedback.type === 'success' ? (
-                  <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
-                    <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd"/>
-                  </svg>
-                ) : (
-                  <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
-                    <path fillRule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clipRule="evenodd"/>
-                  </svg>
-                )}
+                {feedback.message}
               </div>
-              <span className="font-semibold">{feedback.message}</span>
-            </div>
-          )}
+            )}
+          </div>
         </div>
       </div>
     </div>

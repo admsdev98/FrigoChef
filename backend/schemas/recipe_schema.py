@@ -22,6 +22,11 @@ class RecipeStep(BaseModel):
     id: int
     recipe_id: int
     instructions: List[RecipeStepMetadata]
+    
+class RecipeImage(BaseModel):
+    id: int
+    recipe_id: int
+    image_url: str
 
 class Recipe(BaseModel):
     id: int
@@ -39,6 +44,7 @@ class CompleteRecipe(BaseModel):
     recipe_metadata: Optional[RecipeMetadata]
     ingredients: List[RecipeIngredient]
     steps: List[RecipeStep]
+    image: Optional[RecipeImage]
     created_at: datetime
     source_type: str
     source_data: str
@@ -69,3 +75,7 @@ class RecipeIngredientInsert(BaseModel):
 class RecipeStepsInsert(BaseModel):
     recipe_id: int
     instructions: List[RecipeStepMetadataInsert]
+    
+class RecipeImageInsert(BaseModel):
+    recipe_id: int
+    image_url: str

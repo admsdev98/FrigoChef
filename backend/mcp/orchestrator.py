@@ -2,9 +2,9 @@ import os
 
 from agents import Agent, Runner
 
-from repositories.recipe_repository import insert_recipe, insert_recipe_ingredient, insert_recipe_step
+from repositories.recipe_repository import insert_recipe, insert_recipe_ingredient, insert_recipe_step, insert_recipe_image
 from repositories.schema_repository import get_all_table_schemas
-from mcp.agents.image_agent import image_processor_agent
+from mcp.agents.image_agent import image_reader_agent, image_recipe_generator_agent
 from mcp.agents.voice_agent import voice_processor_agent
 from mcp.agents.recipe_agent import recipe_instructions_processor_agent
 from utils.mcp_utils import load_personal_data_file, base64_to_temp_file
@@ -18,13 +18,15 @@ async def orchestrate_message(content, user_id):
             model=os.getenv("OPENAI_MODEL"),
             instructions=load_personal_data_file("orchestrator_instructions"),
             tools=[
-                image_processor_agent,
+                image_reader_agent,
                 voice_processor_agent,
                 recipe_instructions_processor_agent,
+                image_recipe_generator_agent,
                 get_all_table_schemas,
                 insert_recipe,
                 insert_recipe_ingredient,
-                insert_recipe_step
+                insert_recipe_step,
+                insert_recipe_image
             ]
         )
 

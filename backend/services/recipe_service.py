@@ -1,6 +1,6 @@
 from clients.supabase_client import SupabaseClient
 
-from repositories.recipe_repository import get_recipe_steps, get_recipes_by_user_id, get_recipe_ingredients, delete_by_id   
+from repositories.recipe_repository import get_recipe_steps, get_recipes_by_user_id, get_recipe_ingredients, get_recipe_image, delete_by_id   
 from schemas.recipe_schema import CompleteRecipe, Recipe, RecipeIngredient, RecipeStep
 
 def get_recipes_by_user(user_id: int):
@@ -31,10 +31,16 @@ def get_recipe_additional_info(recipe: Recipe) -> CompleteRecipe:
         if steps is None:
             steps = []
 
+        image = get_recipe_image(recipe.id)
+
+        if image is None:
+            image = None
+
         return CompleteRecipe(
             **recipe.model_dump(),
             ingredients=ingredients,
-            steps=steps 
+            steps=steps,
+            image=image
         )
 
     except Exception as e:

@@ -30,8 +30,11 @@ Todos los datos que generes deben cumplir lo siguiente:
 
 - Usa la funcion 'recipe_instructions_processor_agent' para generar los pasos breves de la receta
 
+4. Genera una imagen para la receta
 
-4. Valida los datos
+- Usa la funcion 'image_recipe_generator_agent' para crear la imagen, pasandole como parametro un prompt que describa de manera concisa y precisa la receta que estamos creando.
+
+5. Valida los datos
 
 - Valida que el nombre este en español y coincida con los ingredientes usados.
 - Valida que los ingredientes esten en español.
@@ -39,7 +42,7 @@ Todos los datos que generes deben cumplir lo siguiente:
 - Valida que hayas genera un tag para definir la receta (proteica/vegana/baja en carbohidratos/keto,etc)
 - Valida que la receta se adapte al perfil nutricional del usuario.
 
-5. Una vez que has generado la receta, tienes que:
+6. Una vez que has generado la receta, tienes que:
 
 - Obtener los schemas de las tablas para adaptar los datos que has generado, y poder insertarlos sin problema.
 Puedes usar la tool 'get_all_table_schemas'

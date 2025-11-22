@@ -14,101 +14,88 @@ export function FAQPage() {
 
   const faqs = [
     {
-      question: "¿Cómo funciona el reconocimiento de ingredientes?",
-      answer: "Nuestra IA puede procesar texto, audio o imágenes. Simplemente describe, graba o fotografía tus ingredientes y automáticamente los identificaremos para crear recetas personalizadas."
+      question: "¿Cómo funciona?",
+      answer: "Agrega ingredientes escribiendo, grabando o tomando una foto. La IA genera recetas personalizadas al instante."
     },
     {
-      question: "¿Las recetas se adaptan a mis restricciones alimentarias?",
-      answer: "Sí, puedes configurar tu perfil nutricional con alergias, intolerancias y preferencias dietéticas. Todas las recetas generadas respetarán estas restricciones."
+      question: "¿Es gratis?",
+      answer: "Sí, FrigoChef es completamente gratuito para uso básico."
     },
     {
-      question: "¿Cuántas recetas puedo generar al día?",
-      answer: "Con la cuenta gratuita puedes generar hasta 5 recetas por día. Con FrigoChef Pro tendrás acceso ilimitado a recetas y funcionalidades avanzadas."
+      question: "¿Guarda mis recetas?",
+      answer: "Todas las recetas se guardan automáticamente en tu perfil para acceso posterior."
     },
     {
-      question: "¿Puedo guardar mis recetas favoritas?",
-      answer: "Absolutamente. Todas las recetas que generes se guardan automáticamente en tu perfil, y puedes marcar tus favoritas para acceso rápido."
+      question: "¿Funciona sin internet?",
+      answer: "Las recetas guardadas están disponibles offline, pero necesitas conexión para generar nuevas."
     },
     {
-      question: "¿Funciona sin conexión a internet?",
-      answer: "Las recetas guardadas están disponibles offline, pero necesitas conexión para generar nuevas recetas ya que utilizamos IA en la nube para crear contenido personalizado."
+      question: "¿Cómo cambio mis preferencias?",
+      answer: "Ve a tu perfil y actualiza tus restricciones alimentarias cuando quieras."
     },
     {
-      question: "¿Hay planes de suscripción?",
-      answer: "Estamos trabajando en ofrecer planes premium con funcionalidades extra como menús semanales, listas de compra inteligentes y análisis nutricional avanzado."
-    },
-    {
-      question: "¿Cómo puedo cambiar mis preferencias dietéticas?",
-      answer: "Desde tu perfil de usuario puedes actualizar tus restricciones alimentarias, alergias y preferencias en cualquier momento. Los cambios se aplicarán inmediatamente a las nuevas recetas."
-    },
-    {
-      question: "¿Las recetas incluyen información nutricional?",
-      answer: "Sí, todas las recetas incluyen información básica de calorías y macronutrientes. Los usuarios Pro tienen acceso a análisis nutricional detallado y recomendaciones personalizadas."
-    },
-    {
-      question: "¿Puedo compartir mis recetas con otros usuarios?",
-      answer: "Puedes compartir tus recetas favoritas a través de enlaces directos o redes sociales. También estamos trabajando en una función de comunidad para intercambiar recetas entre usuarios."
-    },
-    {
-      question: "¿Qué hago si una receta no me sale bien?",
-      answer: "Puedes usar nuestro sistema de feedback para reportar problemas con las recetas. Esto nos ayuda a mejorar continuamente nuestros algoritmos de generación de recetas."
+      question: "¿Incluye información nutricional?",
+      answer: "Sí, todas las recetas incluyen información básica de calorías y nutrientes."
     }
   ];
 
   return (
-    <div className="min-h-screen bg-slate-50">
+    <div className="min-h-screen bg-gray-50 animate-fadeIn">
       {/* Header */}
-      <header className="bg-white border-b border-slate-200 sticky top-0 z-50">
-        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex justify-between items-center h-16">
+      <header className="bg-white/90 backdrop-blur-sm border-b border-gray-200 sticky top-0 z-50">
+        <div className="max-w-4xl mx-auto px-4">
+          <div className="flex justify-between items-center h-14">
             {/* Botón volver */}
             <button
               onClick={handleBackClick}
-              className="flex items-center space-x-2 text-slate-600 hover:text-emerald-600 transition-colors"
+              className="flex items-center space-x-2 text-gray-600 hover:text-emerald-600 transition-colors"
             >
-              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15 19l-7-7 7-7" />
               </svg>
-              <span className="font-medium">Volver</span>
+              <span className="text-sm">Volver</span>
             </button>
 
             {/* Logo */}
             <div className="flex items-center">
-              <span className="text-xl font-bold text-emerald-900">Tu NeverApp</span>
+              <span className="text-lg font-semibold text-emerald-700">FrigoChef</span>
             </div>
 
             {/* Botón login */}
             <button
               onClick={handleLoginClick}
-              className="bg-emerald-600 text-white px-6 py-2 rounded-full hover:bg-emerald-700 transition-all shadow-sm text-sm font-medium"
+              className="bg-emerald-600 text-white px-4 py-2 rounded-lg hover:bg-emerald-700 transition-colors text-sm"
             >
-              Iniciar Sesión
+              Entrar
             </button>
           </div>
         </div>
       </header>
 
       {/* Contenido principal */}
-      <main className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+      <main className="max-w-4xl mx-auto px-4 py-8">
         {/* Hero */}
-        <div className="text-center mb-16">
-          <h1 className="text-4xl sm:text-5xl font-bold text-slate-900 mb-6">
+        <div className="text-center mb-12 animate-slideDown">
+          <h1 className="text-3xl sm:text-4xl font-bold text-gray-800 mb-4">
             Preguntas Frecuentes
           </h1>
-          <p className="text-xl text-slate-600 max-w-2xl mx-auto">
-            Todo lo que necesitas saber sobre FrigoChef. Si no encuentras la respuesta que buscas, 
-            no dudes en contactarnos.
+          <p className="text-gray-600">
+            Todo lo que necesitas saber sobre FrigoChef
           </p>
         </div>
 
         {/* FAQ Items */}
-        <div className="space-y-8">
+        <div className="space-y-4">
           {faqs.map((faq, index) => (
-            <div key={index} className="bg-white rounded-xl p-8 shadow-sm border border-slate-200 hover:shadow-md transition-shadow">
-              <h3 className="text-xl font-semibold text-slate-900 mb-4">
+            <div 
+              key={index} 
+              className="bg-white rounded-lg p-6 border border-gray-200 hover:shadow-sm transition-all duration-200 animate-slideUp"
+              style={{ animationDelay: `${index * 100}ms` }}
+            >
+              <h3 className="text-lg font-semibold text-gray-800 mb-3">
                 {faq.question}
               </h3>
-              <p className="text-slate-600 leading-relaxed">
+              <p className="text-gray-600 text-sm leading-relaxed">
                 {faq.answer}
               </p>
             </div>
@@ -116,28 +103,26 @@ export function FAQPage() {
         </div>
 
         {/* CTA Footer */}
-        <div className="text-center mt-16 p-8 bg-gradient-to-r from-emerald-50 to-emerald-100 rounded-2xl">
-          <h3 className="text-2xl font-bold text-slate-900 mb-4">
-            ¿Listo para empezar a cocinar?
+        <div className="text-center mt-12 p-6 bg-emerald-50 rounded-lg animate-slideUp" style={{ animationDelay: '800ms' }}>
+          <h3 className="text-xl font-bold text-gray-800 mb-2">
+            ¿Listo para empezar?
           </h3>
-          <p className="text-slate-600 mb-6">
-            Únete a miles de usuarios que ya están disfrutando de FrigoChef
+          <p className="text-gray-600 mb-4 text-sm">
+            Crea tu primera receta en segundos
           </p>
           <button
             onClick={handleLoginClick}
-            className="bg-emerald-600 text-white px-8 py-4 rounded-full text-lg font-semibold hover:bg-emerald-700 transition-all shadow-lg hover:shadow-xl transform hover:scale-105"
+            className="bg-emerald-600 text-white px-6 py-2 rounded-lg font-medium hover:bg-emerald-700 transition-colors"
           >
-            Crear mi cuenta gratis
+            Empezar ahora
           </button>
         </div>
       </main>
 
       {/* Footer */}
-      <footer className="bg-emerald-900 text-white py-8 mt-16">
-        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center text-emerald-100">
-            <p>&copy; 2025 Tu NeverApp. Todos los derechos reservados.</p>
-          </div>
+      <footer className="bg-gray-800 text-white py-6 mt-12">
+        <div className="max-w-4xl mx-auto px-4 text-center">
+          <p className="text-gray-300 text-sm">&copy; 2025 FrigoChef. Todos los derechos reservados.</p>
         </div>
       </footer>
     </div>

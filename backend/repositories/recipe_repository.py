@@ -1,7 +1,7 @@
 from agents import function_tool
 from clients.supabase_client import SupabaseClient
 
-from schemas.recipe_schema import Recipe, RecipeIngredient, RecipeStep, RecipeInsert, RecipeIngredientInsert, RecipeStepsInsert
+from schemas.recipe_schema import Recipe, RecipeIngredient, RecipeStep, RecipeImage, RecipeInsert, RecipeIngredientInsert, RecipeStepsInsert, RecipeImageInsert
 
 def get_recipes_by_user_id(user_id: int):
     try:
@@ -31,6 +31,16 @@ def get_recipe_steps(recipe_id: int):
     except Exception as e:
         print(f"Error fetching recipe steps: {e}")
         return []
+    
+def get_recipe_image(recipe_id: int):
+    try:
+        client = SupabaseClient().get_client()
+        image = client.from_("recipe_images").select("*").eq("recipe_id", recipe_id).single().execute()
+        
+        return RecipeImage.model_validate(image.data) if image.data else None
+    except Exception as e:
+        print(f"Error fetching recipe image: {e}")
+        return None
 
 @function_tool(description_override="Insert a new recipe")
 def insert_recipe(recipe: RecipeInsert):
@@ -60,6 +70,16 @@ def insert_recipe_step(recipe_steps: RecipeStepsInsert):
         return RecipeStepsInsert.model_validate(response.data[0]) if response.data else None
     except Exception as e:
         print(f"Error inserting recipe step: {e}")
+        return None
+    
+@function_tool(description_override="Insert steps associated with a recipe")
+def insert_recipe_image(recipe_image: RecipeImageInsert):
+    try:
+        client = SupabaseClient().get_client()
+        response = client.table("recipe_images").insert(recipe_image.model_dump(mode="json")).execute()
+        return RecipeImage.model_validate(response.data[0]) if response.data else None
+    except Exception as e:
+        print(f"Error inserting recipe image: {e}")
         return None
     
 
