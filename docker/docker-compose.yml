@@ -27,7 +27,7 @@ services:
     ports:
       - "3000:3000"
     env_file:
-      - ../frontend/.env
+      - ../frontend/src/.env
     depends_on:
       backend:
         condition: service_healthy
