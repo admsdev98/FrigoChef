@@ -7,11 +7,10 @@ const RecipeList = ({ onCreateNew }) => {
   const { recipes, loading, error, loadUserRecipes, deleteRecipe } = useRecipes();
   const [searchTerm, setSearchTerm] = useState('');
   const [sortBy, setSortBy] = useState('recent'); // 'recent', 'name', 'ingredients'
-  const [viewMode, setViewMode] = useState('grid'); // 'grid', 'list'
   const [currentPage, setCurrentPage] = useState(1);
   const [showSearchInput, setShowSearchInput] = useState(false);
   const [showFilters, setShowFilters] = useState(false);
-  
+
   // Responsive items per page
   const getItemsPerPage = () => {
     if (typeof window === 'undefined') return 6;
@@ -20,7 +19,7 @@ const RecipeList = ({ onCreateNew }) => {
     if (width >= 768) return 4;  // md: tablet - 2 filas × 2 columnas
     return 3; // mobile: 3 items por página
   };
-  
+
   const [itemsPerPage, setItemsPerPage] = useState(getItemsPerPage());
 
   useEffect(() => {
@@ -28,7 +27,7 @@ const RecipeList = ({ onCreateNew }) => {
       setItemsPerPage(getItemsPerPage());
       setCurrentPage(1); // Reset to first page on resize
     };
-    
+
     window.addEventListener('resize', handleResize);
     return () => window.removeEventListener('resize', handleResize);
   }, []);
@@ -51,8 +50,8 @@ const RecipeList = ({ onCreateNew }) => {
 
     let filtered = recipes.filter(recipe => {
       const titleMatch = recipe.title && recipe.title.toLowerCase().includes(searchTerm.toLowerCase());
-      
-      const ingredientMatch = recipe.ingredients && Array.isArray(recipe.ingredients) && 
+
+      const ingredientMatch = recipe.ingredients && Array.isArray(recipe.ingredients) &&
         recipe.ingredients.some(ing => {
           if (typeof ing === 'string') {
             return ing.toLowerCase().includes(searchTerm.toLowerCase());
@@ -61,7 +60,7 @@ const RecipeList = ({ onCreateNew }) => {
           }
           return false;
         });
-      
+
       return titleMatch || ingredientMatch;
     });
 
@@ -90,9 +89,9 @@ const RecipeList = ({ onCreateNew }) => {
           </div>
         </div>
         <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
-        {[...Array(6)].map((_, index) => (
-          <SkeletonLoaders.RecipeCardSkeleton key={index} />
-        ))}
+          {[...Array(6)].map((_, index) => (
+            <SkeletonLoaders.RecipeCardSkeleton key={index} />
+          ))}
         </div>
       </div>
     );
@@ -109,7 +108,7 @@ const RecipeList = ({ onCreateNew }) => {
           </div>
           <h3 className="text-lg font-semibold text-gray-900 mb-2">Error al cargar recetas</h3>
           <p className="text-gray-600 mb-4">{error}</p>
-          <button 
+          <button
             onClick={() => loadUserRecipes(true)}
             className="px-4 py-2 bg-emerald-600 text-white rounded-xl hover:bg-emerald-700 transition-colors"
           >
@@ -127,17 +126,16 @@ const RecipeList = ({ onCreateNew }) => {
 
   return (
     <div className="min-h-screen flex flex-col bg-gradient-to-br from-emerald-50 via-white to-emerald-50">
-      {/* Header simplificado - altura fija - siempre arriba */}
-      <div className="bg-white border-b border-emerald-100 shadow-sm flex-shrink-0 sticky top-0 z-10 lg:static lg:z-auto">
+      {/* Header simplificado - altura fija */}
+      <div className="bg-white border-b border-emerald-100 shadow-sm flex-shrink-0 z-10">
         <div className="max-w-7xl mx-auto px-6 py-4">
           <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4">
             <div className="flex items-center gap-4">
-              <h1 className="text-2xl font-bold text-gray-900">Mis Comidas</h1>
               <span className="px-3 py-1 bg-emerald-100 text-emerald-800 rounded-full text-sm font-medium">
                 {filteredAndSortedRecipes.length} recetas
               </span>
             </div>
-            
+
             {/* Controles responsivos */}
             <div className="flex flex-col gap-4">
               {/* Botones principales en mobile, controles completos en desktop */}
@@ -153,7 +151,7 @@ const RecipeList = ({ onCreateNew }) => {
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
                     </svg>
                   </button>
-                  
+
                   <button
                     onClick={() => setShowFilters(!showFilters)}
                     className={`p-2 rounded-lg transition-all ${showFilters ? 'bg-emerald-100 text-emerald-600' : 'bg-gray-100 text-gray-600'}`}
@@ -164,28 +162,7 @@ const RecipeList = ({ onCreateNew }) => {
                     </svg>
                   </button>
 
-                  <div className="flex border border-gray-300 rounded-lg overflow-hidden">
-                    <button
-                      onClick={() => setViewMode('grid')}
-                      className={`p-2 transition-all ${viewMode === 'grid' ? 'bg-emerald-600 text-white' : 'bg-white text-gray-600'}`}
-                      title="Vista en cuadrícula"
-                    >
-                      <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z" />
-                      </svg>
-                    </button>
-                    <button
-                      onClick={() => setViewMode('list')}
-                      className={`p-2 transition-all ${viewMode === 'list' ? 'bg-emerald-600 text-white' : 'bg-white text-gray-600'}`}
-                      title="Vista en lista"
-                    >
-                      <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 10h16M4 14h16M4 18h16" />
-                      </svg>
-                    </button>
-                  </div>
                 </div>
-
                 {/* Desktop: Controles completos */}
                 <div className="hidden lg:flex items-center gap-3">
                   {/* Barra de búsqueda */}
@@ -214,28 +191,6 @@ const RecipeList = ({ onCreateNew }) => {
                     <option value="name">Por nombre</option>
                     <option value="ingredients">Por ingredientes</option>
                   </select>
-
-                  {/* Toggle Grid/Lista */}
-                  <div className="flex border border-gray-300 rounded-lg overflow-hidden">
-                    <button
-                      onClick={() => setViewMode('grid')}
-                      className={`px-3 py-2 transition-all ${viewMode === 'grid' ? 'bg-emerald-600 text-white' : 'bg-white text-gray-600 hover:bg-gray-50'}`}
-                      title="Vista en cuadrícula"
-                    >
-                      <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z" />
-                      </svg>
-                    </button>
-                    <button
-                      onClick={() => setViewMode('list')}
-                      className={`px-3 py-2 transition-all ${viewMode === 'list' ? 'bg-emerald-600 text-white' : 'bg-white text-gray-600 hover:bg-gray-50'}`}
-                      title="Vista en lista"
-                    >
-                      <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 10h16M4 14h16M4 18h16" />
-                      </svg>
-                    </button>
-                  </div>
                 </div>
               </div>
 
@@ -278,11 +233,10 @@ const RecipeList = ({ onCreateNew }) => {
                               setSortBy(option.value);
                               setShowFilters(false);
                             }}
-                            className={`p-3 text-left rounded-lg border transition-all ${
-                              sortBy === option.value 
-                                ? 'border-emerald-500 bg-emerald-50 text-emerald-700' 
+                            className={`p-3 text-left rounded-lg border transition-all ${sortBy === option.value
+                                ? 'border-emerald-500 bg-emerald-50 text-emerald-700'
                                 : 'border-gray-300 bg-white text-gray-700 hover:bg-gray-50'
-                            }`}
+                              }`}
                           >
                             {option.label}
                           </button>
@@ -298,7 +252,7 @@ const RecipeList = ({ onCreateNew }) => {
       </div>
 
       {/* Main Content - ocupa el resto de la pantalla */}
-      <div className="flex-1 flex flex-col max-w-7xl mx-auto px-6 py-6 w-full">
+      <div className="flex-1 flex flex-col max-w-7xl mx-auto px-4 sm:px-6 py-6 w-full">
         {filteredAndSortedRecipes.length === 0 ? (
           <div className="flex-1 flex items-center justify-center">
             <div className="text-center">
@@ -310,12 +264,12 @@ const RecipeList = ({ onCreateNew }) => {
                   </svg>
                 </div>
               </div>
-              
+
               <h3 className="text-3xl font-bold text-gray-900 mb-4">
                 {searchTerm ? 'No se encontraron recetas' : 'Tu aventura culinaria comienza aquí'}
               </h3>
               <p className="text-xl text-gray-600 mb-8 max-w-md mx-auto">
-                {searchTerm 
+                {searchTerm
                   ? `No hay recetas que coincidan con "${searchTerm}"`
                   : 'Crea recetas únicas con IA y descubre sabores increíbles'
                 }
@@ -336,12 +290,8 @@ const RecipeList = ({ onCreateNew }) => {
             {/* Recipe Grid/List con altura ajustada */}
             <div className="flex-1">
               <div className="max-w-7xl mx-auto w-full">
-                <div className={`${
-                  viewMode === 'grid' 
-                    ? "grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6 py-4"
-                    : "space-y-4 py-4"
-                }`}>
-                {currentRecipes.map((recipe, index) => (
+                <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6 py-4">
+                  {currentRecipes.map((recipe, index) => (
                     <RecipeCard
                       key={recipe.id}
                       recipe={recipe}
@@ -352,63 +302,61 @@ const RecipeList = ({ onCreateNew }) => {
                       metadata={recipe.recipe_metadata}
                       image={recipe.image}
                       onDelete={handleDeleteRecipe}
-                      viewMode={viewMode}
                     />
-                ))}
+                  ))}
                 </div>
-                
+
                 {/* Paginación */}
                 {totalPages > 1 && (
                   <div className="flex justify-center items-center gap-2 mt-8 pb-8 lg:pb-4">
                     <button
-                    onClick={() => setCurrentPage(prev => Math.max(prev - 1, 1))}
-                    disabled={currentPage === 1}
-                    className="px-3 py-2 text-sm rounded-lg border border-gray-300 text-gray-600 hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
-                  >
-                    Anterior
-                  </button>
-                  
-                  {/* Mostrar páginas */}
-                  <div className="flex gap-1">
-                    {[...Array(Math.min(totalPages, 5))].map((_, i) => {
-                      let pageNum;
-                      if (totalPages <= 5) {
-                        pageNum = i + 1;
-                      } else {
-                        // Lógica para mostrar páginas alrededor de la actual
-                        const start = Math.max(1, currentPage - 2);
-                        pageNum = start + i;
-                        if (pageNum > totalPages) return null;
-                      }
-                      
-                      return (
-                        <button
-                          key={pageNum}
-                          onClick={() => setCurrentPage(pageNum)}
-                          className={`px-3 py-2 text-sm rounded-lg transition-colors ${
-                            currentPage === pageNum
-                              ? 'bg-emerald-600 text-white'
-                              : 'border border-gray-300 text-gray-600 hover:bg-gray-50'
-                          }`}
-                        >
-                          {pageNum}
-                        </button>
-                      );
-                    })}
+                      onClick={() => setCurrentPage(prev => Math.max(prev - 1, 1))}
+                      disabled={currentPage === 1}
+                      className="px-3 py-2 text-sm rounded-lg border border-gray-300 text-gray-600 hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+                    >
+                      Anterior
+                    </button>
+
+                    {/* Mostrar páginas */}
+                    <div className="flex gap-1">
+                      {[...Array(Math.min(totalPages, 5))].map((_, i) => {
+                        let pageNum;
+                        if (totalPages <= 5) {
+                          pageNum = i + 1;
+                        } else {
+                          // Lógica para mostrar páginas alrededor de la actual
+                          const start = Math.max(1, currentPage - 2);
+                          pageNum = start + i;
+                          if (pageNum > totalPages) return null;
+                        }
+
+                        return (
+                          <button
+                            key={pageNum}
+                            onClick={() => setCurrentPage(pageNum)}
+                            className={`px-3 py-2 text-sm rounded-lg transition-colors ${currentPage === pageNum
+                                ? 'bg-emerald-600 text-white'
+                                : 'border border-gray-300 text-gray-600 hover:bg-gray-50'
+                              }`}
+                          >
+                            {pageNum}
+                          </button>
+                        );
+                      })}
+                    </div>
+
+                    <button
+                      onClick={() => setCurrentPage(prev => Math.min(prev + 1, totalPages))}
+                      disabled={currentPage === totalPages}
+                      className="px-3 py-2 text-sm rounded-lg border border-gray-300 text-gray-600 hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+                    >
+                      Siguiente
+                    </button>
                   </div>
-                  
-                  <button
-                    onClick={() => setCurrentPage(prev => Math.min(prev + 1, totalPages))}
-                    disabled={currentPage === totalPages}
-                    className="px-3 py-2 text-sm rounded-lg border border-gray-300 text-gray-600 hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
-                  >
-                    Siguiente
-                  </button>
-                </div>
-              )}
+                )}
               </div> {/* Cierre del container centralizado */}
             </div>
-            
+
             {/* Floating Action Button - Más pequeño en mobile */}
             <div className="fixed bottom-6 right-6 z-50">
               <button

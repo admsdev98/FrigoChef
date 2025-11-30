@@ -9,3 +9,9 @@ class NutritionPreferences(BaseModel):
     preferred_foods: Optional[List[str]] = []
     avoid_foods: Optional[List[str]] = []
     favorite_dishes: Optional[List[str]] = []
+
+
+class UserProfile(BaseModel):
+    username: Optional[str] = None
+    full_name: Optional[str] = None
+    avatar_url: Optional[str] = None

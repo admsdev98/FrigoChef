@@ -3,7 +3,7 @@ import os
 from openai import OpenAI
 from agents import function_tool
 
-from utils.mcp_utils import load_personal_data_file, delete_temp_file
+from utils.ai_utils import load_personal_data_file, delete_temp_file
 
 
 @function_tool(description_override="Process voice input and return parsed ingredients as text")

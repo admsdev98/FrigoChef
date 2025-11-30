@@ -1,10 +1,10 @@
 from fastapi import APIRouter, Depends
 
 from utils.auth_utils import get_current_user
-from mcp.orchestrator import orchestrate_message
-from schemas.mcp_schema import McpMetadata
+from ai.orchestrator import orchestrate_message
+from schemas.ai_schema import McpMetadata
 
-router = APIRouter(prefix="/mcp", tags=["mcp"])
+router = APIRouter(prefix="/ai", tags=["ai"])
 
 
 @router.post("")

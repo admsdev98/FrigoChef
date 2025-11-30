@@ -1,0 +1,34 @@
+FROM node:20-slim
+
+WORKDIR /app
+
+# Instalar curl para healthcheck
+RUN apt-get update && apt-get install -y curl && rm -rf /var/lib/apt/lists/*
+
+# Copiar archivos de dependencias
+COPY frontend/package*.json ./
+
+# Instalar dependencias
+RUN npm ci --only=production
+
+# Copiar el resto del código
+COPY frontend/ .
+
+# Construir la aplicación para producción
+RUN npm run build
+
+# Instalar servidor estático para servir la build
+RUN npm install -g serve
+
+# Crear usuario no-root
+RUN useradd --create-home --shell /bin/bash app && chown -R app:app /app
+
+USER app
+
+EXPOSE 3000
+
+HEALTHCHECK --interval=30s --timeout=30s --start-period=5s --retries=3 \
+    CMD curl -f http://localhost:3000 || exit 1
+
+# Servir la aplicación construida
+CMD ["serve", "-s", "dist", "-l", "3000"]

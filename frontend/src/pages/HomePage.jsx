@@ -45,17 +45,17 @@ export function HomePage() {
             <div className="flex items-center">
               <span className="text-lg font-semibold text-emerald-700">FrigoChef</span>
             </div>
-            
+
             {/* Navegación - Desktop */}
             <nav className="hidden md:flex items-center space-x-6">
-              <button 
+              <button
                 onClick={handleFAQClick}
                 className="text-gray-600 hover:text-emerald-600 text-sm transition-colors"
               >
                 FAQ
               </button>
             </nav>
-            
+
             {/* Botón login */}
             <button
               onClick={handleLoginClick}
@@ -71,16 +71,16 @@ export function HomePage() {
       <section className="min-h-screen flex items-center pt-16 pb-8">
         <div className="max-w-4xl mx-auto px-4 text-center">
           <div className="mb-8">
-            <img 
-              src={logoSrc} 
-              alt="FrigoChef Logo" 
+            <img
+              src={logoSrc}
+              alt="FrigoChef Logo"
               className="w-32 h-32 sm:w-40 sm:h-40 mx-auto mb-8 animate-scaleIn"
             />
             <h1 className="text-3xl sm:text-4xl font-bold text-gray-800 mb-4 animate-slideDown">
               De tu nevera a tu plato
             </h1>
             <p className="text-lg text-gray-600 mb-8 max-w-2xl mx-auto animate-slideUp" style={{ animationDelay: '200ms' }}>
-              Crea recetas personalizadas con los ingredientes que tienes en casa
+              Crea recetas rápidamente con los ingredientes que tienes en casa. Rapido, sencillo y directo al plato.
             </p>
           </div>
 
@@ -91,17 +91,13 @@ export function HomePage() {
           >
             Crear receta
           </button>
-
-          <p className="text-sm text-gray-500 animate-slideUp" style={{ animationDelay: '600ms' }}>
-            Gratis para empezar
-          </p>
         </div>
       </section>
 
       {/* Cómo funciona */}
-      <section ref={sectionRef} className="py-8 md:py-12 bg-gray-50">
+      <section ref={sectionRef} className="py-12 md:py-16 bg-gray-50">
         <div className="max-w-6xl mx-auto px-4">
-          <h2 className="text-2xl sm:text-3xl font-bold text-gray-800 text-center mb-8 md:mb-12 animate-slideDown">
+          <h2 className="text-2xl sm:text-3xl font-bold text-gray-800 text-center mb-12 animate-slideDown">
             Cómo funciona
           </h2>
 
@@ -109,78 +105,61 @@ export function HomePage() {
           <div className="hidden md:block">
             <div className="grid grid-cols-3 gap-8 max-w-5xl mx-auto">
               {/* Paso 1 */}
-              <div className={`text-center transition-all duration-800 ease-out ${
-                visibleSteps.includes(0) 
-                  ? 'opacity-100 translate-y-0' 
+              <div className={`text-center transition-all duration-800 ease-out ${visibleSteps.includes(0)
+                  ? 'opacity-100 translate-y-0'
                   : 'opacity-0 translate-y-8'
-              }`}>
-                <div className="relative mb-4">
-                  <div className="w-16 h-16 bg-gradient-to-br from-emerald-500 to-emerald-600 rounded-2xl flex items-center justify-center mx-auto shadow-lg hover:shadow-xl transition-shadow duration-300">
-                    <svg className="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 4v16m8-8H4" />
-                    </svg>
-                  </div>
-                  <div className="absolute -bottom-1 left-1/2 transform -translate-x-1/2 w-5 h-5 bg-emerald-100 rounded-full flex items-center justify-center">
-                    <span className="text-emerald-700 font-bold text-xs">1</span>
+                }`}>
+                <div className="relative mb-6">
+                  <div className="w-20 h-20 bg-white rounded-full flex items-center justify-center mx-auto shadow-lg border-4 border-emerald-50 z-10 relative">
+                    <span className="text-3xl font-bold text-emerald-600">1</span>
                   </div>
                 </div>
-                <h3 className="text-lg font-semibold text-gray-800 mb-2">
+                <h3 className="text-xl font-bold text-gray-800 mb-3">
                   Agrega ingredientes
                 </h3>
-                <p className="text-gray-600 text-sm leading-relaxed">
+                <p className="text-gray-600 leading-relaxed max-w-xs mx-auto">
                   Escribe, graba o toma foto de lo que tienes en casa
                 </p>
               </div>
 
               {/* Paso 2 */}
-              <div className={`text-center transition-all duration-800 ease-out ${
-                visibleSteps.includes(1) 
-                  ? 'opacity-100 translate-y-0' 
+              <div className={`text-center transition-all duration-800 ease-out ${visibleSteps.includes(1)
+                  ? 'opacity-100 translate-y-0'
                   : 'opacity-0 translate-y-8'
-              }`}>
-                <div className="relative mb-4">
-                  <div className="w-16 h-16 bg-gradient-to-br from-purple-500 to-purple-600 rounded-2xl flex items-center justify-center mx-auto shadow-lg hover:shadow-xl transition-shadow duration-300">
-                    <svg className="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M13 10V3L4 14h7v7l9-11h-7z" />
-                    </svg>
-                  </div>
-                  <div className="absolute -bottom-1 left-1/2 transform -translate-x-1/2 w-5 h-5 bg-purple-100 rounded-full flex items-center justify-center">
-                    <span className="text-purple-700 font-bold text-xs">2</span>
+                }`}>
+                <div className="relative mb-6">
+                  <div className="w-20 h-20 bg-emerald-600 rounded-full flex items-center justify-center mx-auto shadow-lg border-4 border-emerald-100 z-10 relative overflow-hidden">
+                    <div className="absolute inset-0 bg-gradient-to-br from-emerald-500 to-teal-600"></div>
+                    <span className="text-3xl font-bold text-white relative z-10">2</span>
                   </div>
                 </div>
-                <h3 className="text-lg font-semibold text-gray-800 mb-2">
-                  Recibe recetas
-                </h3>
-                <p className="text-gray-600 text-sm leading-relaxed">
+                <div className="flex items-center justify-center gap-2 mb-3">
+                  <h3 className="text-xl font-bold text-gray-800">
+                    Recibe recetas
+                  </h3>
+                  <span className="px-2 py-0.5 bg-emerald-100 text-emerald-700 text-[10px] font-bold uppercase tracking-wider rounded-full">
+                    IA Powered
+                  </span>
+                </div>
+                <p className="text-gray-600 leading-relaxed max-w-xs mx-auto">
                   La IA genera opciones personalizadas en segundos
                 </p>
-                <div className="mt-2 flex justify-center">
-                  <div className="px-2 py-1 bg-purple-100 text-purple-700 rounded-full text-xs font-medium">
-                    IA Powered
-                  </div>
-                </div>
               </div>
 
               {/* Paso 3 */}
-              <div className={`text-center transition-all duration-800 ease-out ${
-                visibleSteps.includes(2) 
-                  ? 'opacity-100 translate-y-0' 
+              <div className={`text-center transition-all duration-800 ease-out ${visibleSteps.includes(2)
+                  ? 'opacity-100 translate-y-0'
                   : 'opacity-0 translate-y-8'
-              }`}>
-                <div className="relative mb-4">
-                  <div className="w-16 h-16 bg-gradient-to-br from-orange-500 to-orange-600 rounded-2xl flex items-center justify-center mx-auto shadow-lg hover:shadow-xl transition-shadow duration-300">
-                    <svg className="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
-                    </svg>
-                  </div>
-                  <div className="absolute -bottom-1 left-1/2 transform -translate-x-1/2 w-5 h-5 bg-orange-100 rounded-full flex items-center justify-center">
-                    <span className="text-orange-700 font-bold text-xs">3</span>
+                }`}>
+                <div className="relative mb-6">
+                  <div className="w-20 h-20 bg-white rounded-full flex items-center justify-center mx-auto shadow-lg border-4 border-emerald-50 z-10 relative">
+                    <span className="text-3xl font-bold text-emerald-600">3</span>
                   </div>
                 </div>
-                <h3 className="text-lg font-semibold text-gray-800 mb-2">
+                <h3 className="text-xl font-bold text-gray-800 mb-3">
                   Cocina
                 </h3>
-                <p className="text-gray-600 text-sm leading-relaxed">
+                <p className="text-gray-600 leading-relaxed max-w-xs mx-auto">
                   Sigue las instrucciones paso a paso y disfruta
                 </p>
               </div>
@@ -188,49 +167,49 @@ export function HomePage() {
           </div>
 
           {/* Mobile version simplificada */}
-          <div className="md:hidden space-y-6">
+          <div className="md:hidden space-y-8">
             {/* Paso 1 Mobile */}
             <div className="text-center animate-slideUp" style={{ animationDelay: '100ms' }}>
-              <div className="w-14 h-14 bg-gradient-to-br from-emerald-500 to-emerald-600 rounded-xl flex items-center justify-center mx-auto mb-3 shadow-md">
-                <svg className="w-7 h-7 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 4v16m8-8H4" />
-                </svg>
+              <div className="w-16 h-16 bg-white rounded-full flex items-center justify-center mx-auto mb-4 shadow-md border-2 border-emerald-50">
+                <span className="text-2xl font-bold text-emerald-600">1</span>
               </div>
-              <h3 className="text-lg font-semibold text-gray-800 mb-2">
+              <h3 className="text-lg font-bold text-gray-800 mb-2">
                 Agrega ingredientes
               </h3>
-              <p className="text-gray-600 text-sm">
-                Escribe, graba o toma foto de lo que tienes
+              <p className="text-gray-600 text-sm px-4">
+                Escribe, graba o toma foto de lo que tienes en casa
               </p>
             </div>
 
             {/* Paso 2 Mobile */}
             <div className="text-center animate-slideUp" style={{ animationDelay: '200ms' }}>
-              <div className="w-14 h-14 bg-gradient-to-br from-purple-500 to-purple-600 rounded-xl flex items-center justify-center mx-auto mb-3 shadow-md">
-                <svg className="w-7 h-7 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M13 10V3L4 14h7v7l9-11h-7z" />
-                </svg>
+              <div className="w-16 h-16 bg-emerald-600 rounded-full flex items-center justify-center mx-auto mb-4 shadow-md border-2 border-emerald-100 relative overflow-hidden">
+                <div className="absolute inset-0 bg-gradient-to-br from-emerald-500 to-teal-600"></div>
+                <span className="text-2xl font-bold text-white relative z-10">2</span>
               </div>
-              <h3 className="text-lg font-semibold text-gray-800 mb-2">
-                Recibe recetas
-              </h3>
-              <p className="text-gray-600 text-sm">
-                La IA genera opciones personalizadas
+              <div className="flex items-center justify-center gap-2 mb-2">
+                <h3 className="text-lg font-bold text-gray-800">
+                  Recibe recetas
+                </h3>
+                <span className="px-1.5 py-0.5 bg-emerald-100 text-emerald-700 text-[10px] font-bold uppercase tracking-wider rounded-full">
+                  IA
+                </span>
+              </div>
+              <p className="text-gray-600 text-sm px-4">
+                La IA genera opciones personalizadas en segundos
               </p>
             </div>
 
             {/* Paso 3 Mobile */}
             <div className="text-center animate-slideUp" style={{ animationDelay: '300ms' }}>
-              <div className="w-14 h-14 bg-gradient-to-br from-orange-500 to-orange-600 rounded-xl flex items-center justify-center mx-auto mb-3 shadow-md">
-                <svg className="w-7 h-7 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
-                </svg>
+              <div className="w-16 h-16 bg-white rounded-full flex items-center justify-center mx-auto mb-4 shadow-md border-2 border-emerald-50">
+                <span className="text-2xl font-bold text-emerald-600">3</span>
               </div>
-              <h3 className="text-lg font-semibold text-gray-800 mb-2">
+              <h3 className="text-lg font-bold text-gray-800 mb-2">
                 Cocina
               </h3>
-              <p className="text-gray-600 text-sm">
-                Sigue las instrucciones paso a paso
+              <p className="text-gray-600 text-sm px-4">
+                Sigue las instrucciones paso a paso y disfruta
               </p>
             </div>
           </div>

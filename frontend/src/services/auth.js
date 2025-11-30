@@ -28,11 +28,20 @@ export const authService = {
   },
 
   // Registro con email y password
-  async signUp(email, password) {
-    const { data, error } = await supabase.auth.signUp({
+  async signUp(email, password, data = {}) {
+    const { data: response, error } = await supabase.auth.signUp({
       email,
       password,
+      options: {
+        data: data // Pass metadata (full_name, username) here
+      }
     });
-    return { user: data.user, session: data.session, error };
+    return { user: response.user, session: response.session, error };
+  },
+
+  // Actualizar usuario (password, metadata)
+  async updateUser(attributes) {
+    const { data, error } = await supabase.auth.updateUser(attributes);
+    return { data, error };
   }
 };

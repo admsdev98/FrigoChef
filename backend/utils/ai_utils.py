@@ -10,7 +10,7 @@ def load_personal_data_file(file_name):
         raise EnvironmentError("AGENT_ROUTES environment variable is not set")
 
     # Resuelve la ruta desde la raíz del proyecto
-    base_dir = Path(__file__).parent.parent  # Desde utils/mcp_utils.py hacia la raíz del backend
+    base_dir = Path(__file__).parent.parent  # Desde utils/ai_utils.py hacia la raíz del backend
     path = base_dir / routes.lstrip('/') / f"{file_name}.md"
 
     if not path.exists():

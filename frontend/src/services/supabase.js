@@ -14,4 +14,10 @@ if (!supabaseKey) {
   throw new Error('VITE_SUPABASE_KEY es requerida');
 }
 
-export const supabase = createClient(supabaseUrl, supabaseKey);
+export const supabase = createClient(supabaseUrl, supabaseKey, {
+  auth: {
+    persistSession: true,
+    autoRefreshToken: true,
+    detectSessionInUrl: true
+  }
+});

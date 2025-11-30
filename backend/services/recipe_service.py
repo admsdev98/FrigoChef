@@ -1,56 +1,48 @@
-from clients.supabase_client import SupabaseClient
+from fastapi import Depends
+from repositories.recipe_repository import RecipeRepository
+from schemas.recipe_schema import CompleteRecipe, Recipe
 
-from repositories.recipe_repository import get_recipe_steps, get_recipes_by_user_id, get_recipe_ingredients, get_recipe_image, delete_by_id   
-from schemas.recipe_schema import CompleteRecipe, Recipe, RecipeIngredient, RecipeStep
+class RecipeService:
+    def __init__(self, recipe_repository: RecipeRepository = Depends(RecipeRepository)):
+        self.recipe_repository = recipe_repository
 
-def get_recipes_by_user(user_id: int):
-    try:
-        recipes = get_recipes_by_user_id(user_id)
+    def get_recipes_by_user(self, user_id: int) -> list[CompleteRecipe]:
+        try:
+            recipes = self.recipe_repository.get_recipes_by_user_id(user_id)
 
-        if recipes is None:
-            return []
+            if not recipes:
+                return []
 
-        complete_recipes = []
-        for recipe in recipes:
-            complete_recipes.append(get_recipe_additional_info(recipe))
+            complete_recipes = []
+            for recipe in recipes:
+                complete_recipes.append(self.get_recipe_additional_info(recipe))
 
-        return complete_recipes
-    except Exception as e:
-        print(f"Error fetching recipes: {e}")
-        return []
+            return complete_recipes
+        except Exception as e:
+            print(f"Error fetching recipes: {e}")
+            raise e
 
-def get_recipe_additional_info(recipe: Recipe) -> CompleteRecipe:
-    try:
-        ingredients = get_recipe_ingredients(recipe.id)
+    def get_recipe_additional_info(self, recipe: Recipe) -> CompleteRecipe:
+        try:
+            ingredients = self.recipe_repository.get_recipe_ingredients(recipe.id) or []
+            steps = self.recipe_repository.get_recipe_steps(recipe.id) or []
+            image = self.recipe_repository.get_recipe_image(recipe.id)
 
-        if ingredients is None:
-            ingredients = []
+            return CompleteRecipe(
+                **recipe.model_dump(),
+                ingredients=ingredients,
+                steps=steps,
+                image=image
+            )
 
-        steps = get_recipe_steps(recipe.id)
-
-        if steps is None:
-            steps = []
-
-        image = get_recipe_image(recipe.id)
-
-        if image is None:
-            image = None
-
-        return CompleteRecipe(
-            **recipe.model_dump(),
-            ingredients=ingredients,
-            steps=steps,
-            image=image
-        )
-
-    except Exception as e:
-        print(f"Error fetching recipe additional info for {recipe.id}: {e}")
-        return None
+        except Exception as e:
+            print(f"Error fetching recipe additional info for {recipe.id}: {e}")
+            raise e
     
-def delete_recipe_by_id(recipe_id: int, user_id: int):
-    try:
-        return delete_by_id(recipe_id, user_id)
-    except Exception as e:
-        print(f"Error deleting recipe {recipe_id}: {e}")
-        return False
+    def delete_recipe_by_id(self, recipe_id: int, user_id: int) -> bool:
+        try:
+            return self.recipe_repository.delete_by_id(recipe_id, user_id)
+        except Exception as e:
+            print(f"Error deleting recipe {recipe_id}: {e}")
+            raise e
         

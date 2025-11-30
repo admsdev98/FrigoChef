@@ -1,5 +1,37 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+
+const FAQItem = ({ faq, index }) => {
+  const [isOpen, setIsOpen] = useState(false);
+
+  return (
+    <div
+      className="bg-white rounded-xl border border-gray-200 overflow-hidden transition-all duration-300 hover:shadow-md animate-slideUp"
+      style={{ animationDelay: `${index * 100}ms` }}
+    >
+      <button
+        onClick={() => setIsOpen(!isOpen)}
+        className="w-full px-6 py-4 text-left flex justify-between items-center focus:outline-none"
+      >
+        <span className="text-lg font-semibold text-gray-800">{faq.question}</span>
+        <span className={`transform transition-transform duration-300 ${isOpen ? 'rotate-180' : ''}`}>
+          <svg className="w-5 h-5 text-emerald-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7" />
+          </svg>
+        </span>
+      </button>
+
+      <div
+        className={`px-6 transition-all duration-300 ease-in-out overflow-hidden ${isOpen ? 'max-h-48 opacity-100 pb-6' : 'max-h-0 opacity-0'
+          }`}
+      >
+        <p className="text-gray-600 text-sm leading-relaxed border-t border-gray-100 pt-4">
+          {faq.answer}
+        </p>
+      </div>
+    </div>
+  );
+};
 
 export function FAQPage() {
   const navigate = useNavigate();
@@ -14,33 +46,21 @@ export function FAQPage() {
 
   const faqs = [
     {
-      question: "¿Cómo funciona?",
-      answer: "Agrega ingredientes escribiendo, grabando o tomando una foto. La IA genera recetas personalizadas al instante."
+      question: "¿Que es Tu NeveraAPP?",
+      answer: "Tu NeveraAPP es una herramienta que te ayuda a crear recetas rápidamente con los ingredientes que tienes en casa. Facil, rapido y sin complicaciones."
     },
     {
       question: "¿Es gratis?",
-      answer: "Sí, FrigoChef es completamente gratuito para uso básico."
+      answer: "Sí, Tu NeveraAPP es completamente gratuito. Tan solo es un proyecto personal en el que pongo en practica lo que aprendo."
     },
     {
-      question: "¿Guarda mis recetas?",
-      answer: "Todas las recetas se guardan automáticamente en tu perfil para acceso posterior."
-    },
-    {
-      question: "¿Funciona sin internet?",
-      answer: "Las recetas guardadas están disponibles offline, pero necesitas conexión para generar nuevas."
-    },
-    {
-      question: "¿Cómo cambio mis preferencias?",
-      answer: "Ve a tu perfil y actualiza tus restricciones alimentarias cuando quieras."
-    },
-    {
-      question: "¿Incluye información nutricional?",
-      answer: "Sí, todas las recetas incluyen información básica de calorías y nutrientes."
+      question: "¿Que hacéis con la información personal?",
+      answer: "No hacemos nada. Tan solo necesitamos tu correo o una de las cuentas de autenticación disponibles para iniciar sesión, usando la menor información personal posible."
     }
   ];
 
   return (
-    <div className="min-h-screen bg-gray-50 animate-fadeIn">
+    <div className="min-h-screen bg-gray-50 animate-fadeIn flex flex-col">
       {/* Header */}
       <header className="bg-white/90 backdrop-blur-sm border-b border-gray-200 sticky top-0 z-50">
         <div className="max-w-4xl mx-auto px-4">
@@ -73,7 +93,7 @@ export function FAQPage() {
       </header>
 
       {/* Contenido principal */}
-      <main className="max-w-4xl mx-auto px-4 py-8">
+      <main className="flex-1 max-w-4xl mx-auto px-4 py-8 w-full">
         {/* Hero */}
         <div className="text-center mb-12 animate-slideDown">
           <h1 className="text-3xl sm:text-4xl font-bold text-gray-800 mb-4">
@@ -84,43 +104,29 @@ export function FAQPage() {
           </p>
         </div>
 
-        {/* FAQ Items */}
+        {/* FAQ Items Accordion */}
         <div className="space-y-4">
           {faqs.map((faq, index) => (
-            <div 
-              key={index} 
-              className="bg-white rounded-lg p-6 border border-gray-200 hover:shadow-sm transition-all duration-200 animate-slideUp"
-              style={{ animationDelay: `${index * 100}ms` }}
-            >
-              <h3 className="text-lg font-semibold text-gray-800 mb-3">
-                {faq.question}
-              </h3>
-              <p className="text-gray-600 text-sm leading-relaxed">
-                {faq.answer}
-              </p>
-            </div>
+            <FAQItem key={index} faq={faq} index={index} />
           ))}
         </div>
 
         {/* CTA Footer */}
-        <div className="text-center mt-12 p-6 bg-emerald-50 rounded-lg animate-slideUp" style={{ animationDelay: '800ms' }}>
+        <div className="text-center mt-12 p-6 bg-white border border-gray-200 shadow-sm rounded-xl animate-slideUp" style={{ animationDelay: '800ms' }}>
           <h3 className="text-xl font-bold text-gray-800 mb-2">
-            ¿Listo para empezar?
+            ¿Sigues teniendo curiosidad?
           </h3>
-          <p className="text-gray-600 mb-4 text-sm">
-            Crea tu primera receta en segundos
-          </p>
           <button
             onClick={handleLoginClick}
             className="bg-emerald-600 text-white px-6 py-2 rounded-lg font-medium hover:bg-emerald-700 transition-colors"
           >
-            Empezar ahora
+            Crea tu primera receta!
           </button>
         </div>
       </main>
 
       {/* Footer */}
-      <footer className="bg-gray-800 text-white py-6 mt-12">
+      <footer className="bg-gray-800 text-white py-6 mt-auto">
         <div className="max-w-4xl mx-auto px-4 text-center">
           <p className="text-gray-300 text-sm">&copy; 2025 FrigoChef. Todos los derechos reservados.</p>
         </div>

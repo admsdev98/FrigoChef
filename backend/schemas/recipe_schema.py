@@ -59,12 +59,20 @@ class RecipeStepMetadataInsert(BaseModel):
     step_number: int
     instruction: str
 
+class RecipeIngredientCreate(BaseModel):
+    name: str
+    quantity: str
+    unit: str
+
 class RecipeInsert(BaseModel):
     user_id: str
     title: str
     recipe_metadata: Optional[RecipeMetadataInsert]
     source_type: str
     source_data: str
+    ingredients: Optional[List[RecipeIngredientCreate]] = None
+    steps: Optional[List[RecipeStepMetadataInsert]] = None
+    image_url: Optional[str] = None
 
 class RecipeIngredientInsert(BaseModel):
     recipe_id: int

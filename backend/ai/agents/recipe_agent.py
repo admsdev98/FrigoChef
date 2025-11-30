@@ -4,7 +4,7 @@ import base64
 from openai import OpenAI
 from agents import function_tool
 
-from utils.mcp_utils import load_personal_data_file
+from utils.ai_utils import load_personal_data_file
 
 @function_tool(description_override="Provice step-by-step cooking instructions for the given recipe description.")
 async def recipe_instructions_processor_agent(recipe_description: str):

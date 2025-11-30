@@ -68,10 +68,6 @@ export function HomePage() {
           >
             Crear receta
           </button>
-
-          <p className="text-sm text-gray-500">
-            Gratis para empezar
-          </p>
         </div>
       </section>
 

@@ -4,7 +4,8 @@ import base64
 from openai import OpenAI
 from agents import function_tool
 
-from utils.mcp_utils import load_personal_data_file
+from utils.ai_utils import load_personal_data_file
+
 
 @function_tool(description_override="Process image base64 file and return parsed ingredients as text")
 async def image_reader_agent(image_data_temp_file: str, image_type: str = "jpeg"):
@@ -16,7 +17,7 @@ async def image_reader_agent(image_data_temp_file: str, image_type: str = "jpeg"
         with open(image_data_temp_file, "rb") as image_file:
             image_base64 = base64.b64encode(image_file.read()).decode("utf-8")
             image_transcription = client.responses.create(
-                model=os.getenv("IMAGE_MODEL"),
+                model=os.getenv("IMAGE_READER_MODEL"),
                 input=[
                     {
                         "role": "user",
@@ -46,6 +47,7 @@ def image_recipe_generator_agent(recipe_prompt: str):
             size="1024x1024",
             response_format="url"
         )
+        
         return response.data[0].url
 
     except ValueError as e:

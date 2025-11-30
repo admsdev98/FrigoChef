@@ -18,5 +18,14 @@ def get_all_table_schemas():
             "name": {"type": "text", "nullable": False},
             "quantity": {"type": "text", "nullable": False},
             "unit": {"type": "text", "nullable": False}
+        },
+        "recipe_steps": {
+            "recipe_id": {"type": "integer", "nullable": False},
+            "step_number": {"type": "integer", "nullable": False},
+            "instruction": {"type": "text", "nullable": False}
+        },
+        "recipe_images": {
+            "recipe_id": {"type": "integer", "nullable": False},
+            "image_url": {"type": "text", "nullable": False}
         }
     }
