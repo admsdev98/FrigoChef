@@ -1,16 +1,14 @@
-version: '3.8'
-
 services:
   backend:
     build:
-      context: .
-      dockerfile: dockerfile.backend
+      context: ..
+      dockerfile: docker/dockerfile.backend
     container_name: frigochef-backend
     restart: unless-stopped
     ports:
       - "8000:8000"
     env_file:
-      - ./backend/.env.local
+      - ../backend/.env
     networks:
       - frigochef-network
     healthcheck:
@@ -22,14 +20,14 @@ services:
 
   frontend:
     build:
-      context: .
-      dockerfile: dockerfile.frontend
+      context: ..
+      dockerfile: docker/dockerfile.frontend
     container_name: frigochef-frontend
     restart: unless-stopped
     ports:
       - "3000:3000"
     env_file:
-      - ./frontend/.env.local
+      - ../frontend/.env
     depends_on:
       backend:
         condition: service_healthy
