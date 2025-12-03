@@ -1,6 +1,6 @@
 import { supabase } from '../services/supabase';
 
-const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:8000';
+const API_URL = import.meta.env.VITE_FRIGOCHEF_API_URL || 'http://localhost:8000';
 
 /**
  * Generic fetch wrapper that handles Auth headers automatically

@@ -26,6 +26,8 @@ services:
     build:
       context: ..
       dockerfile: docker/dockerfile.frontend
+      args:
+        VITE_FRIGOCHEF_API_URL: /api
     container_name: tuneveraapp-frontend
     restart: unless-stopped
     ports:

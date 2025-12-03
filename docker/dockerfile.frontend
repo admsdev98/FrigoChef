@@ -15,6 +15,8 @@ RUN npm ci
 COPY frontend/ .
 
 # Construir la aplicación para producción
+ARG VITE_FRIGOCHEF_API_URL
+ENV VITE_FRIGOCHEF_API_URL=$VITE_FRIGOCHEF_API_URL
 RUN npm run build
 
 # Instalar servidor estático para servir la build
